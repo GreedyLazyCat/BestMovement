@@ -1,0 +1,252 @@
+[gd_scene load_steps=38 format=3 uid="uid://cdio3mceftpbr"]
+
+[ext_resource type="Texture2D" uid="uid://bc00pmh2dbgg7" path="res://assets/entities/demon_gunner/demon-gunner-idle.png" id="1_m1xby"]
+[ext_resource type="Script" path="res://scripts/DemonGunner.gd" id="1_rkc6s"]
+[ext_resource type="Script" path="res://scripts/hitbox/HurtBox.gd" id="2_2irie"]
+[ext_resource type="Shader" uid="uid://0uo8t2iop42t" path="res://shaders/HitShader.tres" id="2_8pgai"]
+[ext_resource type="Texture2D" uid="uid://dub22sgwcaxey" path="res://assets/entities/demon_gunner/demon-gunner-falling.png" id="2_xvvak"]
+[ext_resource type="Texture2D" uid="uid://geg45k2lpwqj" path="res://assets/entities/demon_gunner/demon-gunner-fall-recovery.png" id="3_e7qko"]
+[ext_resource type="Texture2D" uid="uid://bd00thf7e7l4a" path="res://assets/entities/demon_gunner/demon-gunner-run.png" id="3_qsy70"]
+[ext_resource type="Script" path="res://scripts/HealthHandler.gd" id="4_el8mm"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerStateMachine.gd" id="5_j1jy6"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/IdleState.gd" id="6_3xq36"]
+[ext_resource type="Texture2D" uid="uid://bqyk061ekjrsj" path="res://assets/entities/demon_gunner/demon-gunner-jump.png" id="6_q0oee"]
+[ext_resource type="Texture2D" uid="uid://bdvs8oj0vyui3" path="res://assets/entities/demon_gunner/demon-gunner-prep-jump.png" id="7_1d61v"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerFallState.gd" id="8_aqvj8"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerWanderState.gd" id="12_1dwyu"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerJumpState.gd" id="13_opjkg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1nml6"]
+resource_local_to_scene = true
+shader = ExtResource("2_8pgai")
+shader_parameter/FillColor = Color(1, 1, 1, 0)
+shader_parameter/Amount = 0.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ogsr5"]
+atlas = ExtResource("2_xvvak")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1wxk6"]
+atlas = ExtResource("2_xvvak")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cn8af"]
+atlas = ExtResource("2_xvvak")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eeeds"]
+atlas = ExtResource("3_e7qko")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4cmhe"]
+atlas = ExtResource("3_e7qko")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ne5o"]
+atlas = ExtResource("1_m1xby")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0nt8k"]
+atlas = ExtResource("1_m1xby")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mqp8i"]
+atlas = ExtResource("6_q0oee")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i1mnf"]
+atlas = ExtResource("6_q0oee")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_71r7f"]
+atlas = ExtResource("6_q0oee")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_voopa"]
+atlas = ExtResource("7_1d61v")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w1fqf"]
+atlas = ExtResource("7_1d61v")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xai7t"]
+atlas = ExtResource("3_qsy70")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qsyor"]
+atlas = ExtResource("3_qsy70")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_si27l"]
+atlas = ExtResource("3_qsy70")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqdd5"]
+atlas = ExtResource("3_qsy70")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_et1fv"]
+atlas = ExtResource("3_qsy70")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y3316"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ogsr5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1wxk6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cn8af")
+}],
+"loop": false,
+"name": &"Fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eeeds")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4cmhe")
+}],
+"loop": false,
+"name": &"FallLand",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ne5o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0nt8k")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mqp8i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i1mnf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_71r7f")
+}],
+"loop": false,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_voopa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w1fqf")
+}],
+"loop": false,
+"name": &"JumpPrep",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xai7t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qsyor")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_si27l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qqdd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_et1fv")
+}],
+"loop": true,
+"name": &"Run",
+"speed": 12.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e1or4"]
+size = Vector2(10, 17)
+
+[sub_resource type="Gradient" id="Gradient_0atil"]
+offsets = PackedFloat32Array(0, 0.782857)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fy27n"]
+gradient = SubResource("Gradient_0atil")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("1_rkc6s")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_1nml6")
+sprite_frames = SubResource("SpriteFrames_y3316")
+animation = &"Fall"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 23.5)
+shape = SubResource("RectangleShape2D_e1or4")
+
+[node name="HurtBox" type="Area2D" parent="." node_paths=PackedStringArray("collision_shape")]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("2_2irie")
+collision_shape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(1, 23.5)
+shape = SubResource("RectangleShape2D_e1or4")
+
+[node name="HealthHandler" type="Node" parent="."]
+script = ExtResource("4_el8mm")
+max_health = 20
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(3, 16)
+color = Color(1, 0.350913, 0.284113, 1)
+texture = SubResource("GradientTexture2D_fy27n")
+texture_scale = 0.5
+
+[node name="GunnerStateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "sprite")]
+script = ExtResource("5_j1jy6")
+current_state = NodePath("GunnerIdleState")
+sprite = NodePath("../AnimatedSprite2D")
+jump_height = 50.0
+jump_time_to_peak = 0.3
+jump_time_to_descent = 0.5
+jump_distance = 50.0
+
+[node name="GunnerIdleState" type="Node" parent="GunnerStateMachine"]
+script = ExtResource("6_3xq36")
+idle_state_time_bottom = 2.0
+idle_state_time_top = 4.0
+
+[node name="GunnerFallState" type="Node" parent="GunnerStateMachine"]
+script = ExtResource("8_aqvj8")
+
+[node name="GunnerWanderState" type="Node" parent="GunnerStateMachine"]
+script = ExtResource("12_1dwyu")
+wander_time_bottom = 1.0
+wander_time_top = 3.0
+
+[node name="GunnerJumpState" type="Node" parent="GunnerStateMachine"]
+script = ExtResource("13_opjkg")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(6, 24)
+target_position = Vector2(17, 0)
+collision_mask = 16
