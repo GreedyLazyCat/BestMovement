@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var state_machine = $GunnerStateMachine
 @onready var sprite = $AnimatedSprite2D
 @onready var jump_ray_cast = $RayCast2D
+@onready var shoot_ray_cast = $ShootRayCast
 
 var direction: int
 var prev_direction: int
@@ -37,13 +38,20 @@ func _process(delta):
 	if get_direction() > 0:
 		sprite.flip_h = false
 		jump_ray_cast.position.x = 6
+		shoot_ray_cast.position.x = 6
 	else:
 		jump_ray_cast.position.x = -4
+		shoot_ray_cast.position.x = -4
 		sprite.flip_h = true
+	shoot_ray_cast.scale.x = get_direction()
 	jump_ray_cast.scale.x = get_direction()
 	
 	if jump_ray_cast.is_colliding() and not state_machine.current_state_is("GunnerJumpState"):
 		state_machine.change_state_to("GunnerJumpState")
+	if shoot_ray_cast.is_colliding() \
+	and not state_machine.current_state_is("GunnerShootState")\
+	and is_on_floor():
+		state_machine.change_state_to("GunnerShootState")
 	
 func _physics_process(delta):
 	move_and_slide()

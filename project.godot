@@ -61,6 +61,8 @@ attack={
 [layer_names]
 
 2d_physics/layer_2="PlayerHurtLayer"
-2d_physics/layer_3="PlayerHitLayer"
+2d_physics/layer_3="PlayerDetectionArea"
+2d_physics/layer_5="EnemyCollisionLayer"
 2d_physics/layer_6="EnemyHurtLayer"
 2d_physics/layer_7="EnemyHitLayer"
+2d_physics/layer_8="EnymyPartsLayer"
