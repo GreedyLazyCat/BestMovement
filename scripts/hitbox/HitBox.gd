@@ -20,5 +20,5 @@ func is_impactful():
 	return damage_type == DamageType.Impactful
 
 func _ready():
-	pass
+	assert(collision_shape, "Collision shape not referenced")
 

@@ -1,11 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://du5f16cjgx0qm"]
+[gd_scene load_steps=19 format=3 uid="uid://du5f16cjgx0qm"]
 
 [ext_resource type="PackedScene" uid="uid://c73cg3qe6bac" path="res://scenes/vagabond.tscn" id="1_escma"]
 [ext_resource type="Script" path="res://scenes/TestLevel.gd" id="1_wmpkh"]
 [ext_resource type="Shader" path="res://shaders/CRT.gdshader" id="3_6qddu"]
 [ext_resource type="Texture2D" uid="uid://cmjr4s3g62tb5" path="res://assets/tiles/tilesheet.png" id="3_ierxl"]
 [ext_resource type="Texture2D" uid="uid://mb20fspqc8qm" path="res://assets/backgrounds/Nightcity.png" id="4_tfbjw"]
-[ext_resource type="PackedScene" uid="uid://cdio3mceftpbr" path="res://scenes/DemonGunner.tscn" id="6_hglw2"]
+[ext_resource type="FontFile" uid="uid://4bcby5ion0fi" path="res://assets/fonts/ElfBoyClassic/Elfboyclassic.ttf" id="5_i2w8v"]
+[ext_resource type="PackedScene" uid="uid://cdio3mceftpbr" path="res://scenes/Entities/GunnerDemon/DemonGunner.tscn" id="6_hglw2"]
+[ext_resource type="PackedScene" uid="uid://36ugvay7s7hj" path="res://scenes/Entities/Hound/Hound.tscn" id="8_innuy"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0vbs8"]
 texture = ExtResource("3_ierxl")
@@ -344,7 +346,7 @@ texture = ExtResource("3_ierxl")
 11:9/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_uwq0u"]
-physics_layer_0/collision_layer = 145
+physics_layer_0/collision_layer = 147
 physics_layer_0/collision_mask = 17
 sources/0 = SubResource("TileSetAtlasSource_0vbs8")
 
@@ -368,6 +370,9 @@ fog_sun_scatter = 0.6
 fog_density = 0.9858
 fog_height = 1024.0
 fog_height_density = 10.8387
+
+[sub_resource type="Theme" id="Theme_vpv64"]
+default_font = ExtResource("5_i2w8v")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lsu87"]
 resource_local_to_scene = true
@@ -430,7 +435,7 @@ _data = {
 "Test": SubResource("Animation_541wr")
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="TestLevel" type="Node2D"]
 script = ExtResource("1_wmpkh")
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -485,8 +490,11 @@ scale = Vector2(0.7275, 0.736)
 texture = ExtResource("4_tfbjw")
 centered = false
 
-[node name="Player" parent="." instance=ExtResource("1_escma")]
+[node name="Player" parent="." node_paths=PackedStringArray("label", "camera") instance=ExtResource("1_escma")]
 position = Vector2(479, 439)
+label = NodePath("Camera2D/CanvasLayer/Control/Label")
+camera = NodePath("Camera2D")
+shake_offset = 5.0
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(-190, -134)
@@ -498,6 +506,27 @@ limit_bottom = 648
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 editor_draw_limits = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Player/Camera2D"]
+
+[node name="Control" type="Control" parent="Player/Camera2D/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 479.0
+offset_top = 439.0
+offset_right = 479.0
+offset_bottom = 439.0
+
+[node name="Label" type="Label" parent="Player/Camera2D/CanvasLayer/Control"]
+layout_mode = 0
+offset_left = -427.0
+offset_top = -399.0
+offset_right = -387.0
+offset_bottom = -376.0
+scale = Vector2(3, 3)
+theme = SubResource("Theme_vpv64")
+text = "test
+"
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="Player/Camera2D"]
 
@@ -515,15 +544,12 @@ color = Color(0.95421, 0.95421, 0.95421, 1)
 color = Color(0.362077, 0.362077, 0.362077, 1)
 
 [node name="Gunner2" parent="." instance=ExtResource("6_hglw2")]
-position = Vector2(517, 461)
+position = Vector2(291, 459)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_qxuyu")
 }
 
-[node name="Gunner3" parent="." instance=ExtResource("6_hglw2")]
-position = Vector2(634, 401)
-
-[node name="Gunner4" parent="." instance=ExtResource("6_hglw2")]
-position = Vector2(723, 396)
+[node name="Hound" parent="." instance=ExtResource("8_innuy")]
+position = Vector2(352, 456)

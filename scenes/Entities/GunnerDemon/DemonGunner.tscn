@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://cdio3mceftpbr"]
+[gd_scene load_steps=58 format=3 uid="uid://cdio3mceftpbr"]
 
 [ext_resource type="Texture2D" uid="uid://bc00pmh2dbgg7" path="res://assets/entities/demon_gunner/demon-gunner-idle.png" id="1_m1xby"]
 [ext_resource type="Script" path="res://scripts/DemonGunner.gd" id="1_rkc6s"]
@@ -9,15 +9,16 @@
 [ext_resource type="Texture2D" uid="uid://bd00thf7e7l4a" path="res://assets/entities/demon_gunner/demon-gunner-run.png" id="3_qsy70"]
 [ext_resource type="Script" path="res://scripts/HealthHandler.gd" id="4_el8mm"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerStateMachine.gd" id="5_j1jy6"]
-[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/IdleState.gd" id="6_3xq36"]
 [ext_resource type="Texture2D" uid="uid://bqyk061ekjrsj" path="res://assets/entities/demon_gunner/demon-gunner-jump.png" id="6_q0oee"]
 [ext_resource type="Texture2D" uid="uid://bdvs8oj0vyui3" path="res://assets/entities/demon_gunner/demon-gunner-prep-jump.png" id="7_1d61v"]
-[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerFallState.gd" id="8_aqvj8"]
 [ext_resource type="Texture2D" uid="uid://bbt835bwm6ots" path="res://assets/entities/demon_gunner/demon-gunner-shoot.png" id="9_abe0h"]
-[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerWanderState.gd" id="12_1dwyu"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityIdleState.gd" id="13_6alvr"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerJumpState.gd" id="13_opjkg"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerChaseState.gd" id="16_1ryih"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerShootState.gd" id="18_mnxt5"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/StunState.gd" id="19_ehgqb"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityWanderState.gd" id="19_x4a28"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityFallState.gd" id="19_yqtmn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1nml6"]
 resource_local_to_scene = true
@@ -101,6 +102,10 @@ region = Rect2(0, 0, 64, 64)
 atlas = ExtResource("9_abe0h")
 region = Rect2(64, 0, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjm63"]
+atlas = ExtResource("9_abe0h")
+region = Rect2(64, 0, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_jvwcj"]
 atlas = ExtResource("9_abe0h")
 region = Rect2(128, 0, 64, 64)
@@ -130,6 +135,22 @@ atlas = ExtResource("9_abe0h")
 region = Rect2(512, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7ce7q"]
+atlas = ExtResource("9_abe0h")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qg8ox"]
+atlas = ExtResource("9_abe0h")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_juvge"]
+atlas = ExtResource("9_abe0h")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sdbmh"]
+atlas = ExtResource("9_abe0h")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljukf"]
 atlas = ExtResource("9_abe0h")
 region = Rect2(576, 0, 64, 64)
 
@@ -224,6 +245,9 @@ animations = [{
 "texture": SubResource("AtlasTexture_xmq28")
 }, {
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_tjm63")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_jvwcj")
 }, {
 "duration": 1.0,
@@ -246,29 +270,41 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7ce7q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qg8ox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_juvge")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sdbmh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljukf")
 }],
 "loop": false,
 "name": &"Shoot",
-"speed": 12.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e1or4"]
 size = Vector2(10, 17)
 
-[sub_resource type="Gradient" id="Gradient_0atil"]
+[sub_resource type="Gradient" id="Gradient_m414i"]
 offsets = PackedFloat32Array(0, 0.782857)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_fy27n"]
-gradient = SubResource("Gradient_0atil")
+gradient = SubResource("Gradient_m414i")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4h561"]
-size = Vector2(158.5, 30)
+size = Vector2(231.625, 32)
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
-collision_layer = 16
+collision_layer = 0
 collision_mask = 16
 script = ExtResource("1_rkc6s")
 
@@ -276,9 +312,7 @@ script = ExtResource("1_rkc6s")
 texture_filter = 1
 material = SubResource("ShaderMaterial_1nml6")
 sprite_frames = SubResource("SpriteFrames_y3316")
-animation = &"Shoot"
-frame = 9
-frame_progress = 1.0
+animation = &"JumpPrep"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 23.5)
@@ -296,7 +330,7 @@ shape = SubResource("RectangleShape2D_e1or4")
 
 [node name="HealthHandler" type="Node" parent="."]
 script = ExtResource("4_el8mm")
-max_health = 20
+max_health = 40
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(4, 19)
@@ -304,28 +338,22 @@ color = Color(1, 0.350913, 0.284113, 1)
 texture = SubResource("GradientTexture2D_fy27n")
 texture_scale = 0.5
 
-[node name="GunnerStateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "detection_area", "sprite")]
+[node name="GunnerStateMachine" type="Node" parent="." node_paths=PackedStringArray("detection_area", "current_state", "sprite")]
 script = ExtResource("5_j1jy6")
-current_state = NodePath("GunnerIdleState")
 detection_area = NodePath("../DetectionArea")
-sprite = NodePath("../AnimatedSprite2D")
 jump_height = 50.0
 jump_time_to_peak = 0.3
 jump_time_to_descent = 0.5
 jump_distance = 50.0
+current_state = NodePath("GunnerIdleState")
+state_prefix = "Gunner"
+sprite = NodePath("../AnimatedSprite2D")
 
 [node name="GunnerIdleState" type="Node" parent="GunnerStateMachine"]
-script = ExtResource("6_3xq36")
+script = ExtResource("13_6alvr")
 idle_state_time_bottom = 2.0
 idle_state_time_top = 4.0
-
-[node name="GunnerFallState" type="Node" parent="GunnerStateMachine"]
-script = ExtResource("8_aqvj8")
-
-[node name="GunnerWanderState" type="Node" parent="GunnerStateMachine"]
-script = ExtResource("12_1dwyu")
-wander_time_bottom = 1.0
-wander_time_top = 3.0
+animation_name = "Idle"
 
 [node name="GunnerJumpState" type="Node" parent="GunnerStateMachine"]
 script = ExtResource("13_opjkg")
@@ -335,6 +363,21 @@ script = ExtResource("16_1ryih")
 
 [node name="GunnerShootState" type="Node" parent="GunnerStateMachine"]
 script = ExtResource("18_mnxt5")
+
+[node name="GunnerStunState" type="Node" parent="GunnerStateMachine"]
+script = ExtResource("19_ehgqb")
+stun_time = 2.0
+
+[node name="GunnerWanderState" type="Node" parent="GunnerStateMachine"]
+script = ExtResource("19_x4a28")
+wander_time_bottom = 2.0
+wander_time_top = 3.0
+animation_name = "Run"
+
+[node name="GunnerFallState" type="Node" parent="GunnerStateMachine"]
+script = ExtResource("19_yqtmn")
+fall_animation_name = "Fall"
+fall_land_animation_name = "FallLand"
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2(6, 24)
@@ -346,10 +389,10 @@ collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-position = Vector2(1, 17)
+position = Vector2(1, 16)
 shape = SubResource("RectangleShape2D_4h561")
 
 [node name="ShootRayCast" type="RayCast2D" parent="."]
-position = Vector2(6, 24)
-target_position = Vector2(74, 0)
+position = Vector2(0, 24)
+target_position = Vector2(117, 0)
 collision_mask = 4

@@ -8,4 +8,4 @@ func enter():
 
 func update_physics(delta):
 	if not state_machine.player.is_on_floor():
-		transitioned.emit(self, state_machine.get_node("FallState"))
+		transitioned.emit(self, "FallState")

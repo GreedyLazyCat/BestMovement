@@ -1,5 +1,5 @@
 class_name GunnerFallState
-extends GunnerState
+extends EntityState
 
 
 
@@ -17,4 +17,4 @@ func update_physics(delta):
 
 func on_anim_finish():
 	if state_machine.sprite.animation == "FallLand":
-		transitioned.emit(self, state_machine.get_node("GunnerIdleState"))
+		transitioned.emit(self, "IdleState")

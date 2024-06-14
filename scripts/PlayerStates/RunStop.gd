@@ -6,7 +6,7 @@ func enter():
 
 func update_physics(delta):
 	if not state_machine.player.is_on_floor():
-		self.transitioned.emit(self, state_machine.get_node("FallState"))
+		self.transitioned.emit(self, "FallState")
 	if not state_machine.sprite.is_playing():
-		transitioned.emit(self, state_machine.get_node("IdleState"))
+		transitioned.emit(self, "IdleState")
 	state_machine.player.velocity.x = lerp(state_machine.player.velocity.x, 0.0, 0.35)

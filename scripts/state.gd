@@ -2,7 +2,7 @@ class_name State
 extends Node
 
 
-signal transitioned(from: State, to: State)
+signal transitioned(from: State, to: String)
 
 func update_physics(delta):
 	pass

@@ -8,5 +8,5 @@ func enter():
 	
 func update_physics(delta):
 	if not state_machine.player.is_on_floor():
-		self.transitioned.emit(self, state_machine.get_node("FallState"))
+		self.transitioned.emit(self, "FallState")
 	state_machine.player.velocity.x = lerp(state_machine.player.velocity.x, 0.0, 0.35)

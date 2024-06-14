@@ -15,20 +15,21 @@ func _physics_process(delta):
 	if Input.is_action_pressed("left"):
 		no_movement_action_pressed = false
 		if state_machine.current_state.is_h_movement_allowed:
+			current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
+			state_machine.player.velocity.x = -current_speed
+			
 			if state_machine.player.is_on_floor():
 				state_machine.change_state_to("MoveState")
-			
-				current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
-				state_machine.player.velocity.x = -current_speed
-	
+				
 	if Input.is_action_pressed("right"):
 		no_movement_action_pressed = false
 		if state_machine.current_state.is_h_movement_allowed:
+			current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
+			state_machine.player.velocity.x = current_speed
 			if state_machine.player.is_on_floor():
 				state_machine.change_state_to("MoveState")
 			
-			current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
-			state_machine.player.velocity.x = current_speed
+			
 	
 	if Input.is_action_just_pressed("jump"):
 		if state_machine.current_state.is_v_movement_allowed:

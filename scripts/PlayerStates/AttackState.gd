@@ -30,7 +30,7 @@ func enter():
 
 func update(delta):
 	if Input.is_action_just_pressed("attack"):
-		if state_machine.sprite.is_playing() and state_machine.sprite.frame > 2:
+		if state_machine.sprite.is_playing() and state_machine.sprite.frame > 1:
 			queue = get_next_anim(state_machine.sprite.animation)
 	
 	if state_machine.sprite.is_playing() and \
@@ -46,14 +46,16 @@ func update(delta):
 			state_machine.player.velocity.x = 0
 
 func on_anim_finish():
-	if queue == '':
-			if state_machine.player.is_on_floor():
-				transitioned.emit(self, state_machine.get_node("IdleState"))
-			else:
-				transitioned.emit(self, state_machine.get_node("FallState"))
-	else:
-		state_machine.sprite.play(queue)
-		queue = ''
+	if state_machine.sprite.animation in air_combo_animations or \
+	state_machine.sprite.animation in ground_combo_animations:
+		if queue == '':
+				if state_machine.player.is_on_floor():
+					transitioned.emit(self, "IdleState")
+				else:
+					transitioned.emit(self, "FallState")
+		else:
+			state_machine.sprite.play(queue)
+			queue = ''
 
 func update_physics(delta):
 	state_machine.player.velocity.x = lerp(state_machine.player.velocity.x, 0.0, 0.35)

@@ -1,5 +1,5 @@
 class_name GunnerJumpState
-extends GunnerState
+extends EntityState
 
 func enter():
 	state_machine.sprite.play("JumpPrep")
@@ -17,4 +17,4 @@ func update_physics(delta):
 	if state_machine.sprite.animation == "Jump":
 		state_machine.entity.velocity.y += state_machine.jump_gravity * delta
 		if state_machine.entity.velocity.y > 0:
-			transitioned.emit(self, state_machine.get_node("GunnerFallState"))
+			transitioned.emit(self, "FallState")

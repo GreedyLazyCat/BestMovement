@@ -45,6 +45,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if current_state:
+		#print(current_state.name)
 		current_state.update(delta)
 
 func _physics_process(delta):
@@ -52,6 +53,8 @@ func _physics_process(delta):
 		current_state.update_physics(delta)
 
 func change_state_to(to: String):
+	if current_state.name == to:
+		return
 	if restricted_transitions.keys().has(current_state.name):
 		if to in restricted_transitions[current_state.name]:
 			return
@@ -61,7 +64,7 @@ func change_state_to(to: String):
 		to_state.enter()
 		prev_state = current_state
 		current_state = to_state
-	#print(current_state.name)d
+	#print("Changed fom change state to:" + current_state.name)
 	
 
 func current_state_is(state_name: String) -> bool:
@@ -76,10 +79,12 @@ func change_to_prev_state():
 	current_state = prev_state
 	
 
-func change_state(from: State, to: State):
-	from.exit()
-	to.enter()
-	prev_state = current_state
-	current_state = to
-	#print(current_state.name)
+func change_state(from: State, to: String):
+	var to_state = get_node(to) as State
+	if to_state:
+		from.exit()
+		to_state.enter()
+		prev_state = current_state
+		current_state = to_state
+	#print( "Changed from" + from.name + " transitioned:" + current_state.name)
 	
