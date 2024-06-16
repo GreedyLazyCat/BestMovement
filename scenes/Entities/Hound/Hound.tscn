@@ -251,14 +251,19 @@ autoplay = "Idle"
 position = Vector2(0, 26.5)
 shape = SubResource("RectangleShape2D_v4dws")
 
+[node name="EdgeCheckRight" type="RayCast2D" parent="."]
+position = Vector2(-6, 32)
+target_position = Vector2(0, 9)
+collision_mask = 16
+
 [node name="HoundStateMachine" type="Node" parent="." node_paths=PackedStringArray("detection_area", "current_state", "sprite")]
 script = ExtResource("3_excc5")
 detection_area = NodePath("../DetectionArea")
+current_state = NodePath("IdleState")
 jump_height = 30.0
 jump_time_to_peak = 0.4
 jump_time_to_descent = 0.4
 jump_distance = 70.0
-current_state = NodePath("IdleState")
 sprite = NodePath("../AnimatedSprite2D")
 
 [node name="IdleState" type="Node" parent="HoundStateMachine"]
@@ -267,10 +272,11 @@ idle_state_time_bottom = 2.0
 idle_state_time_top = 2.0
 animation_name = "Idle"
 
-[node name="WanderState" type="Node" parent="HoundStateMachine"]
+[node name="WanderState" type="Node" parent="HoundStateMachine" node_paths=PackedStringArray("edge_check")]
 script = ExtResource("5_2qaqn")
 wander_time_bottom = 1.0
 wander_time_top = 1.5
+edge_check = NodePath("../../EdgeCheckRight")
 animation_name = "Run"
 
 [node name="FallState" type="Node" parent="HoundStateMachine"]

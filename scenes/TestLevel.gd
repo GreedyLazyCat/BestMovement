@@ -1,13 +1,12 @@
 extends Node2D
 
-@onready var vhs_layer = $Player/Camera2D/CanvasLayer2/ColorRect
+@onready var vhs_layer = $Player/Camera2D/CameraEffect/ColorRect
 @onready var animation_player = $AnimationPlayer
 @onready var player = $Player
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	animation_player.play("Test")
-	print(self.name)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

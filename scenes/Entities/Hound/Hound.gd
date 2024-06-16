@@ -8,9 +8,13 @@ extends CharacterBody2D
 @onready var jump_ray_cast = $JumpRayCast
 @onready var hitbox = $HitBox
 @onready var health_handler = $HealthHandler
+@onready var edge_check_raycast = $EdgeCheckRight
+
+var edge_check_position
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	edge_check_position = edge_check_raycast.position.x
 	state_machine.entity = self
 	hurtbox.hurted.connect(self.on_hit)
 	health_handler.dead.connect(self.on_death)
@@ -27,13 +31,13 @@ func _process(delta):
 	var direction = state_machine.get_direction(self)
 	if direction > 0:
 		sprite.flip_h = false
-		
 	else:
 		sprite.flip_h = true
 	
 	attack_ray_cast.scale.x = direction
 	jump_ray_cast.scale.x = direction
 	hitbox.scale.x = direction
+	edge_check_raycast.position.x = -edge_check_position * direction
 	
 	if attack_ray_cast.is_colliding() and not state_machine.current_state_is("AttackState"):
 		state_machine.change_state_to("AttackState")

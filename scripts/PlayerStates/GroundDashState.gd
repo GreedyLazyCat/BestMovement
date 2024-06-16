@@ -21,7 +21,7 @@ func enter():
 		timer.timeout.connect(self.instantiate_ghost)
 	
 func update_physics(delta):
-	if state_machine.sprite.frame > 0:
+	if state_machine.sprite.frame > 0 and state_machine.player.is_on_floor():
 		is_v_movement_allowed = true
 	if not state_machine.sprite.is_playing():
 		state_machine.player.velocity.x = prev_velocity

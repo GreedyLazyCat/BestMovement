@@ -4,16 +4,9 @@ extends EntityStateMachine
 @export var detection_area: Area2D
 
 @export_group("Gravity Values")
-@export var jump_height: float
-@export var jump_time_to_peak: float
-@export var jump_time_to_descent: float
-@export var jump_distance: float
 @export var acceleration: float
 
-@onready var jump_gravity = (2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
-@onready var fall_gravity =  (2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)
-@onready var jump_velocity = (-2.0 * jump_height) / jump_time_to_peak
-@onready var speed = jump_distance / (jump_time_to_peak + jump_time_to_descent)
+
 
 
 var entity: Hound

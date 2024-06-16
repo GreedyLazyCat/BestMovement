@@ -318,6 +318,11 @@ animation = &"JumpPrep"
 position = Vector2(1, 23.5)
 shape = SubResource("RectangleShape2D_e1or4")
 
+[node name="EdgeCheckLeft" type="RayCast2D" parent="."]
+position = Vector2(5, 32)
+target_position = Vector2(0, 9)
+collision_mask = 16
+
 [node name="HurtBox" type="Area2D" parent="." node_paths=PackedStringArray("collision_shape")]
 collision_layer = 0
 collision_mask = 32
@@ -368,10 +373,11 @@ script = ExtResource("18_mnxt5")
 script = ExtResource("19_ehgqb")
 stun_time = 2.0
 
-[node name="GunnerWanderState" type="Node" parent="GunnerStateMachine"]
+[node name="GunnerWanderState" type="Node" parent="GunnerStateMachine" node_paths=PackedStringArray("edge_check")]
 script = ExtResource("19_x4a28")
 wander_time_bottom = 2.0
 wander_time_top = 3.0
+edge_check = NodePath("../../EdgeCheckLeft")
 animation_name = "Run"
 
 [node name="GunnerFallState" type="Node" parent="GunnerStateMachine"]

@@ -38,12 +38,18 @@ func update(delta):
 	or state_machine.sprite.animation in air_combo_animations):
 		var frames_len = state_machine.sprite.sprite_frames.get_frame_count(state_machine.sprite.animation)
 		
-		if state_machine.sprite.frame > 0 and state_machine.sprite.frame < frames_len - 2:
+		if state_machine.sprite.frame in range(1, frames_len - 2):
 			hitbox.collision_shape.set_deferred("disabled", false)
 			state_machine.player.velocity.x = lerp(attack_shift * state_machine.player.get_direction(), 0, 0.35) 
 		else:
 			hitbox.collision_shape.set_deferred("disabled", true)
 			state_machine.player.velocity.x = 0
+		if state_machine.sprite.frame > 1:
+			is_block_allowed = true
+			is_dash_allowed = true
+		else:
+			is_block_allowed = false
+			is_dash_allowed = false
 
 func on_anim_finish():
 	if state_machine.sprite.animation in air_combo_animations or \

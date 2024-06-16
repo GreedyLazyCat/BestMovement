@@ -60,15 +60,20 @@ func change_state_to(to: String):
 			return
 	var to_state = get_node(to)
 	if to_state != current_state:
+		prev_state = current_state
 		current_state.exit()
 		to_state.enter()
-		prev_state = current_state
 		current_state = to_state
 	#print("Changed fom change state to:" + current_state.name)
 	
 
 func current_state_is(state_name: String) -> bool:
-	return current_state.name == state_name
+	return current_state.name.to_lower() == state_name.to_lower()
+
+func prev_state_is(state_name: String) -> bool:
+	if not prev_state:
+		return false
+	return prev_state.name.to_lower() == state_name.to_lower()
 
 func is_dashing() -> bool:
 	return current_state.name == "GroundDashState" or current_state.name == "AirDashState"
@@ -82,9 +87,9 @@ func change_to_prev_state():
 func change_state(from: State, to: String):
 	var to_state = get_node(to) as State
 	if to_state:
+		prev_state = current_state
 		from.exit()
 		to_state.enter()
-		prev_state = current_state
 		current_state = to_state
 	#print( "Changed from" + from.name + " transitioned:" + current_state.name)
 	

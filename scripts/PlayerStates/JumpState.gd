@@ -3,6 +3,8 @@ extends PlayerState
 
 
 func enter():
+	is_v_movement_allowed = false
+	is_block_allowed = false
 	is_h_movement_allowed = true
 	state_machine.sprite.play("Jump")
 	state_machine.player.velocity.y = state_machine.jump_velocity

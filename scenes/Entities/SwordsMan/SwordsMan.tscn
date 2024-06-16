@@ -1,0 +1,255 @@
+[gd_scene load_steps=36 format=3 uid="uid://3drfuk1mstfe"]
+
+[ext_resource type="Texture2D" uid="uid://c2q8f7k0r0o2e" path="res://assets/entities/swordsman/demon-swordsman-idle.png" id="1_c5e0y"]
+[ext_resource type="Texture2D" uid="uid://bcineqrncork5" path="res://assets/entities/swordsman/demon-swordsman-falling.png" id="1_iwtjr"]
+[ext_resource type="Script" path="res://scripts/SwordsMan.gd" id="1_up65u"]
+[ext_resource type="Texture2D" uid="uid://c3xubsfqatn57" path="res://assets/entities/swordsman/demon-swordsman-fall-recovery.png" id="2_3q4tf"]
+[ext_resource type="Texture2D" uid="uid://bpmcawvqrw4gf" path="res://assets/entities/swordsman/demon-swordsman-moving.png" id="4_emo5k"]
+[ext_resource type="Texture2D" uid="uid://dib868x1vllks" path="res://assets/entities/swordsman/demon-swordsman-jumping.png" id="5_ikbu1"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/SwordsManStates/SwordsManStateMachine.gd" id="5_ncgl2"]
+[ext_resource type="Texture2D" uid="uid://d02lifabxsima" path="res://assets/entities/swordsman/demon-swordsman-prepare-jump.png" id="6_a2357"]
+[ext_resource type="Script" path="res://scripts/hitbox/HurtBox.gd" id="6_iyetl"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityIdleState.gd" id="6_nxr7s"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityWanderState.gd" id="7_1nllj"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityFallState.gd" id="8_hqi0y"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EnityJumpState.gd" id="10_yb2hh"]
+[ext_resource type="Script" path="res://scripts/HealthHandler.gd" id="11_b3we3"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityChaseState.gd" id="13_rw5gf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dk7xo"]
+atlas = ExtResource("1_iwtjr")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l1bb8"]
+atlas = ExtResource("2_3q4tf")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_egthl"]
+atlas = ExtResource("2_3q4tf")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4bod2"]
+atlas = ExtResource("1_c5e0y")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lsqk"]
+atlas = ExtResource("1_c5e0y")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_icrqe"]
+atlas = ExtResource("5_ikbu1")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jxh6b"]
+atlas = ExtResource("6_a2357")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nij6h"]
+atlas = ExtResource("6_a2357")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nug4y"]
+atlas = ExtResource("6_a2357")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8ku3"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjbww"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dtcem"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cvqjg"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isbse"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gdmca"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hvq2"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ed8d"]
+atlas = ExtResource("4_emo5k")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_br35j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dk7xo")
+}],
+"loop": true,
+"name": &"Fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l1bb8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_egthl")
+}],
+"loop": false,
+"name": &"FallLand",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4bod2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8lsqk")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_icrqe")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jxh6b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nij6h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nug4y")
+}],
+"loop": false,
+"name": &"JumpPrep",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8ku3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cjbww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dtcem")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cvqjg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isbse")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gdmca")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hvq2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ed8d")
+}],
+"loop": true,
+"name": &"Run",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i88ht"]
+size = Vector2(8, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6li44"]
+size = Vector2(165.25, 40)
+
+[node name="SwordsMan" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("1_up65u")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_br35j")
+animation = &"Jump"
+offset = Vector2(3, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 25)
+shape = SubResource("RectangleShape2D_i88ht")
+
+[node name="SwordsManStateMachine" type="Node" parent="." node_paths=PackedStringArray("detection_area", "current_state", "sprite")]
+script = ExtResource("5_ncgl2")
+detection_area = NodePath("../DetectionArea")
+current_state = NodePath("IdleState")
+jump_height = 35.0
+jump_time_to_peak = 0.35
+jump_time_to_descent = 0.33
+jump_distance = 30.0
+sprite = NodePath("../AnimatedSprite2D")
+
+[node name="IdleState" type="Node" parent="SwordsManStateMachine"]
+script = ExtResource("6_nxr7s")
+idle_state_time_bottom = 2.0
+idle_state_time_top = 2.0
+animation_name = "Idle"
+
+[node name="WanderState" type="Node" parent="SwordsManStateMachine" node_paths=PackedStringArray("edge_check")]
+script = ExtResource("7_1nllj")
+wander_time_bottom = 2.0
+wander_time_top = 2.0
+edge_check = NodePath("../../EdgeCheck")
+animation_name = "Run"
+
+[node name="FallState" type="Node" parent="SwordsManStateMachine"]
+script = ExtResource("8_hqi0y")
+fall_animation_name = "Fall"
+fall_land_animation_name = "FallLand"
+
+[node name="JumpState" type="Node" parent="SwordsManStateMachine"]
+script = ExtResource("10_yb2hh")
+animation_name = "Jump"
+prep_animation_name = "JumpPrep"
+
+[node name="ChaseState" type="Node" parent="SwordsManStateMachine"]
+script = ExtResource("13_rw5gf")
+animation_name = "Run"
+
+[node name="HurtBox" type="Area2D" parent="." node_paths=PackedStringArray("collision_shape")]
+collision_layer = 0
+collision_mask = 32
+script = ExtResource("6_iyetl")
+collision_shape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, 25)
+shape = SubResource("RectangleShape2D_i88ht")
+
+[node name="EdgeCheck" type="RayCast2D" parent="."]
+position = Vector2(3, 32)
+target_position = Vector2(0, 7)
+
+[node name="HealthHandler" type="Node" parent="."]
+script = ExtResource("11_b3we3")
+
+[node name="JumpRayCast" type="RayCast2D" parent="."]
+position = Vector2(0, 25)
+target_position = Vector2(16, 0)
+collision_mask = 16
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_6li44")

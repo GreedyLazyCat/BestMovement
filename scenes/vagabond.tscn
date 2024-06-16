@@ -1,4 +1,4 @@
-[gd_scene load_steps=100 format=3 uid="uid://c73cg3qe6bac"]
+[gd_scene load_steps=107 format=3 uid="uid://c73cg3qe6bac"]
 
 [ext_resource type="Script" path="res://scripts/vagabond.gd" id="1_38utm"]
 [ext_resource type="Texture2D" uid="uid://b32u7uekkyjh0" path="res://assets/vagabond-jump.png" id="1_jqxqu"]
@@ -12,9 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://bhtfaoocjiccv" path="res://assets/vagabond-run-end.png" id="4_4h2rh"]
 [ext_resource type="Script" path="res://scripts/state_machine.gd" id="5_fc70v"]
 [ext_resource type="Texture2D" uid="uid://pk40ukxhha7q" path="res://assets/vagabond-death.png" id="5_kpy40"]
+[ext_resource type="Texture2D" uid="uid://b1x6b60xtrwbv" path="res://assets/vagabond-block.png" id="6_ccj30"]
 [ext_resource type="Texture2D" uid="uid://cq2j7xdx346fj" path="res://assets/vagabond-landing-prep-jump.png" id="6_ivyc0"]
 [ext_resource type="Script" path="res://scripts/hitbox/HurtBox.gd" id="9_2noqt"]
 [ext_resource type="Script" path="res://scripts/InputMovementHandler.gd" id="9_jv11a"]
+[ext_resource type="Texture2D" uid="uid://c8b7aq7rdahm0" path="res://assets/vagabond-wall-slide.png" id="14_7sump"]
 [ext_resource type="Script" path="res://scripts/PlayerStates/IdleState.gd" id="14_8qnhc"]
 [ext_resource type="Script" path="res://scripts/PlayerStates/FallState.gd" id="15_j0k42"]
 [ext_resource type="Script" path="res://scripts/PlayerStates/MoveState.gd" id="16_jl6so"]
@@ -25,6 +27,8 @@
 [ext_resource type="Script" path="res://scripts/HealthHandler.gd" id="20_33qmi"]
 [ext_resource type="Script" path="res://scripts/PlayerStates/AttackState.gd" id="20_irsvd"]
 [ext_resource type="Script" path="res://scripts/PlayerStates/DeathState.gd" id="21_yigro"]
+[ext_resource type="Script" path="res://scripts/PlayerStates/BlockState.gd" id="25_pl0pf"]
+[ext_resource type="Script" path="res://scripts/PlayerStates/WallSlide.gd" id="27_ksvg3"]
 
 [sub_resource type="Animation" id="Animation_t020x"]
 resource_name = "Test"
@@ -179,6 +183,14 @@ region = Rect2(1664, 0, 128, 64)
 atlas = ExtResource("3_8m6r3")
 region = Rect2(1792, 0, 128, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8bb0"]
+atlas = ExtResource("6_ccj30")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a0j4t"]
+atlas = ExtResource("6_ccj30")
+region = Rect2(64, 0, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_17b2d"]
 atlas = ExtResource("5_kpy40")
 region = Rect2(0, 0, 64, 64)
@@ -294,6 +306,10 @@ region = Rect2(128, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6pefo"]
 atlas = ExtResource("4_4h2rh")
 region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pkdek"]
+atlas = ExtResource("14_7sump")
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_2c2qd"]
 animations = [{
@@ -439,6 +455,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_h8bb0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a0j4t")
+}],
+"loop": true,
+"name": &"Block",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_17b2d")
 }, {
 "duration": 1.0,
@@ -563,6 +590,14 @@ animations = [{
 "loop": false,
 "name": &"RunStop",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pkdek")
+}],
+"loop": false,
+"name": &"WallSlide",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3x4ll"]
@@ -616,7 +651,7 @@ libraries = {
 texture_filter = 1
 material = SubResource("ShaderMaterial_s3nyq")
 sprite_frames = SubResource("SpriteFrames_2c2qd")
-animation = &"Attack3"
+animation = &"WallSlide"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 21.5)
@@ -686,10 +721,19 @@ attack_shift = 50
 [node name="DeathState" type="Node" parent="StateMachine"]
 script = ExtResource("21_yigro")
 
-[node name="InputMovementHandler" type="Node" parent="." node_paths=PackedStringArray("state_machine", "ray_cast")]
+[node name="BlockState" type="Node" parent="StateMachine"]
+script = ExtResource("25_pl0pf")
+
+[node name="WallSlide" type="Node" parent="StateMachine" node_paths=PackedStringArray("ray_cast")]
+script = ExtResource("27_ksvg3")
+ray_cast = NodePath("../../WallSlideRayCast")
+slow_amout = 0.1
+
+[node name="InputMovementHandler" type="Node" parent="." node_paths=PackedStringArray("state_machine", "jump_ray_cast", "wall_slide_ray_cast")]
 script = ExtResource("9_jv11a")
 state_machine = NodePath("../StateMachine")
-ray_cast = NodePath("../RayCast2D")
+jump_ray_cast = NodePath("../JumpRayCast")
+wall_slide_ray_cast = NodePath("../WallSlideRayCast")
 
 [node name="HealthHandler" type="Node" parent="."]
 script = ExtResource("20_33qmi")
@@ -703,9 +747,9 @@ amount = 10
 process_material = SubResource("ParticleProcessMaterial_63ikj")
 trail_lifetime = 0.2
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
+[node name="JumpRayCast" type="RayCast2D" parent="."]
 position = Vector2(0, 32)
-target_position = Vector2(0, 6)
+target_position = Vector2(0, 8)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(2.38419e-07, 15)
@@ -723,3 +767,7 @@ lifetime = 0.5
 one_shot = true
 explosiveness = 0.91
 randomness = 0.17
+
+[node name="WallSlideRayCast" type="RayCast2D" parent="."]
+position = Vector2(0, 22)
+target_position = Vector2(6, 0)

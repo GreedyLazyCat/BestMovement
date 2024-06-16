@@ -7,11 +7,19 @@ extends CharacterBody2D
 @onready var hitbox = $HitBox
 @onready var hit_particles = $HurtParticles
 @onready var health_handler = $HealthHandler
+@onready var movement_handler = $InputMovementHandler
+@onready var wall_slide_raycast = $WallSlideRayCast
+
+
 @export var invinsible_dash: bool = false
 @export var label: Label
 @export_group("Camera")
 @export var camera: Camera2D
 @export var shake_offset: float
+@export_group("Debug")
+@export var print_current_state: bool
+
+
 
 var camera_offset: float = 0
 
@@ -42,8 +50,12 @@ func random_offset() -> Vector2:
 	
 func on_hit(hurting_hitbox: HitBox):
 	camera_offset = shake_offset
-	color_hit(Vector4(255.0,255.0,255.0,255.0), 1, 0.1)
-	health_handler.deal_damage(hurting_hitbox.damage)
+	if not state_machine.current_state_is("BlockState"):
+		color_hit(Vector4(255.0,255.0,255.0,255.0), 1, 0.1)
+		health_handler.deal_damage(hurting_hitbox.damage)
+	else:
+		state_machine.change_state_to("IdleState")
+		movement_handler.await_block_awailable(1.5)
 
 func on_death():
 	state_machine.change_state_to("DeathState")
@@ -57,9 +69,14 @@ func _process(delta):
 	else:
 		sprite.flip_h = true
 	
+	wall_slide_raycast.scale.x = get_direction()
+	
 	if camera:
 		camera.offset = random_offset()
 		camera_offset = lerp(camera_offset, 0.0, 0.3)
+	
+	if print_current_state:
+		print(state_machine.current_state.name)
 	
 
 func _physics_process(delta):
