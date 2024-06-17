@@ -19,4 +19,5 @@ func update_physics(delta):
 
 func on_anim_finish():
 	if state_machine.sprite.animation == fall_land_animation_name:
+		state_machine.speed = state_machine.default_speed
 		transitioned.emit(self, "IdleState")

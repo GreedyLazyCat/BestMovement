@@ -77,3 +77,6 @@ func get_next_anim(anim: String):
 		index = 0
 
 	return animations[index]
+
+func exit():
+	hitbox.collision_shape.set_deferred("disabled", true)

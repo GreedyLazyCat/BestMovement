@@ -18,7 +18,9 @@ func on_prep_finished():
 	if state_machine.sprite.animation == prep_animation_name:
 		state_machine.sprite.play(animation_name)
 		state_machine.entity.velocity.y = state_machine.jump_velocity
-		state_machine.entity.velocity.x = state_machine.speed
+		print(state_machine.get_direction(state_machine.entity))
+		print(state_machine.entity.velocity.x)
+		state_machine.entity.velocity.x = state_machine.speed * state_machine.get_direction(state_machine.entity)
 
 func update_physics(delta):
 	if state_machine.sprite.animation == animation_name:

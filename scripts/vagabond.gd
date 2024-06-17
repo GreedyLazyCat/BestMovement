@@ -12,7 +12,6 @@ extends CharacterBody2D
 
 
 @export var invinsible_dash: bool = false
-@export var label: Label
 @export_group("Camera")
 @export var camera: Camera2D
 @export var shake_offset: float
@@ -54,7 +53,6 @@ func on_hit(hurting_hitbox: HitBox):
 		color_hit(Vector4(255.0,255.0,255.0,255.0), 1, 0.1)
 		health_handler.deal_damage(hurting_hitbox.damage)
 	else:
-		state_machine.change_state_to("IdleState")
 		movement_handler.await_block_awailable(1.5)
 
 func on_death():
@@ -62,8 +60,6 @@ func on_death():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if label:
-		label.text = "HP: " + str(health_handler.health)
 	if get_direction() > 0:
 		sprite.flip_h = false
 	else:

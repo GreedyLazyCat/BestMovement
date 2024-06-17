@@ -7,11 +7,11 @@
 [ext_resource type="Texture2D" uid="uid://dub22sgwcaxey" path="res://assets/entities/demon_gunner/demon-gunner-falling.png" id="2_xvvak"]
 [ext_resource type="Texture2D" uid="uid://geg45k2lpwqj" path="res://assets/entities/demon_gunner/demon-gunner-fall-recovery.png" id="3_e7qko"]
 [ext_resource type="Texture2D" uid="uid://bd00thf7e7l4a" path="res://assets/entities/demon_gunner/demon-gunner-run.png" id="3_qsy70"]
-[ext_resource type="Script" path="res://scripts/HealthHandler.gd" id="4_el8mm"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerStateMachine.gd" id="5_j1jy6"]
 [ext_resource type="Texture2D" uid="uid://bqyk061ekjrsj" path="res://assets/entities/demon_gunner/demon-gunner-jump.png" id="6_q0oee"]
 [ext_resource type="Texture2D" uid="uid://bdvs8oj0vyui3" path="res://assets/entities/demon_gunner/demon-gunner-prep-jump.png" id="7_1d61v"]
 [ext_resource type="Texture2D" uid="uid://bbt835bwm6ots" path="res://assets/entities/demon_gunner/demon-gunner-shoot.png" id="9_abe0h"]
+[ext_resource type="Script" path="res://scripts/Handlers/HealthHandler.gd" id="11_rl4wu"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityIdleState.gd" id="13_6alvr"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerJumpState.gd" id="13_opjkg"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/GunnerChaseState.gd" id="16_1ryih"]
@@ -334,8 +334,8 @@ position = Vector2(1, 23.5)
 shape = SubResource("RectangleShape2D_e1or4")
 
 [node name="HealthHandler" type="Node" parent="."]
-script = ExtResource("4_el8mm")
-max_health = 40
+script = ExtResource("11_rl4wu")
+max_health = 2
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 position = Vector2(4, 19)
@@ -346,12 +346,12 @@ texture_scale = 0.5
 [node name="GunnerStateMachine" type="Node" parent="." node_paths=PackedStringArray("detection_area", "current_state", "sprite")]
 script = ExtResource("5_j1jy6")
 detection_area = NodePath("../DetectionArea")
+current_state = NodePath("GunnerIdleState")
+state_prefix = "Gunner"
 jump_height = 50.0
 jump_time_to_peak = 0.3
 jump_time_to_descent = 0.5
 jump_distance = 50.0
-current_state = NodePath("GunnerIdleState")
-state_prefix = "Gunner"
 sprite = NodePath("../AnimatedSprite2D")
 
 [node name="GunnerIdleState" type="Node" parent="GunnerStateMachine"]
@@ -362,6 +362,8 @@ animation_name = "Idle"
 
 [node name="GunnerJumpState" type="Node" parent="GunnerStateMachine"]
 script = ExtResource("13_opjkg")
+animation_name = "Jump"
+prep_animation_name = "JumpPrep"
 
 [node name="GunnerChaseState" type="Node" parent="GunnerStateMachine"]
 script = ExtResource("16_1ryih")

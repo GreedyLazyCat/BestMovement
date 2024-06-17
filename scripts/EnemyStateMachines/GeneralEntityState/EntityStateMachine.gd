@@ -20,42 +20,44 @@ var player: Player
 @export var walk_particles: GPUParticles2D
 @export_group("Debug")
 @export var print_current_state: bool = false
+@export var disable_ai: bool = false
 
 @onready var jump_gravity = (2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 @onready var fall_gravity =  (2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)
 @onready var jump_velocity = (-2.0 * jump_height) / jump_time_to_peak
-@onready var speed = jump_distance / (jump_time_to_peak + jump_time_to_descent)
+@onready var default_speed = jump_distance / (jump_time_to_peak + jump_time_to_descent)
+var speed
 
 var direction: int = 1
 var prev_direction: int = 1
 
 
 func _ready():
-	
 	for child in get_children():
 		if child is State:
 			child.transitioned.connect(self.change_state)
 			child.state_machine = self
-	
+	speed = default_speed
 	current_state.enter()
 
 func _process(delta):
-	if current_state:
+	if current_state and not disable_ai:
 		if print_current_state:
 			print(current_state.name)
 		current_state.update(delta)
 
 func _physics_process(delta):
-	if current_state:
+	if current_state and not disable_ai:
 		current_state.update_physics(delta)
 
 func change_state_to(to: String):
-	var to_state = get_node(state_prefix + to)
-	if to_state != current_state:
-		current_state.exit()
-		to_state.enter()
-		prev_state = current_state
-		current_state = to_state
+	if not disable_ai:
+		var to_state = get_node(state_prefix + to)
+		if to_state != current_state:
+			current_state.exit()
+			to_state.enter()
+			prev_state = current_state
+			current_state = to_state
 	
 
 func current_state_is(state_name: String) -> bool:
@@ -70,12 +72,13 @@ func change_to_prev_state():
 	current_state = prev_state
 
 func change_state(from: State, to: String):
-	var to_state = get_node(state_prefix + to)
-	if to_state:
-		from.exit()
-		to_state.enter()
-		prev_state = current_state
-		current_state = to_state
+	if not disable_ai:
+		var to_state = get_node(state_prefix + to)
+		if to_state:
+			from.exit()
+			to_state.enter()
+			prev_state = current_state
+			current_state = to_state
 	
 func get_direction(entity: CharacterBody2D) -> int:
 	direction = sign(entity.velocity.x)

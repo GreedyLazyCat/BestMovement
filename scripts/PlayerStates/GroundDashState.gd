@@ -4,8 +4,10 @@ extends PlayerState
 var prev_velocity
 @export var timer: Timer
 @export var hurtbox: HurtBox
+@export var dash_bar_handler: DashBarHandler
 
 func enter():
+	dash_bar_handler.use_dash()
 	if state_machine.player.invinsible_dash:
 		hurtbox.collision_shape.set_deferred("disabled", true)
 	is_h_movement_allowed = false

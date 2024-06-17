@@ -11,6 +11,7 @@ var player: Player
 func _ready():
 	hitbox.hitted.connect(self.on_hurt)
 	sprite.animation_finished.connect(self.on_anim_finished)
+	hitbox.direction = direction
 	
 func on_hurt():
 	sprite.play("Explosion")

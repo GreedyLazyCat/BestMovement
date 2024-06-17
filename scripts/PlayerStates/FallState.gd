@@ -8,7 +8,7 @@ func enter():
 		is_v_movement_allowed = true
 		get_tree().create_timer(coyote_time).timeout.connect(self.disable_v_movement)
 	
-	is_block_allowed = false
+	#is_block_allowed = false
 	state_machine.sprite.play("Fall")
 	
 	if not state_machine.sprite.animation_finished.is_connected(self.on_anim_finish):

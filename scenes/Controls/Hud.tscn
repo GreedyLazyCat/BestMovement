@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://iym3nw7dqibn"]
+
+[ext_resource type="Script" path="res://scripts/Controls/Hud/Hud.gd" id="1_xtvt1"]
+[ext_resource type="Texture2D" uid="uid://b22uvpvd6bfaf" path="res://assets/hud/dash-bar-back.png" id="2_cmiq8"]
+[ext_resource type="FontFile" uid="uid://4bcby5ion0fi" path="res://assets/fonts/ElfBoyClassic/Elfboyclassic.ttf" id="2_p2og6"]
+[ext_resource type="Texture2D" uid="uid://xuphwhf3kmnd" path="res://assets/hud/dash-bar-progress.png" id="3_es77h"]
+
+[sub_resource type="Theme" id="Theme_stp44"]
+Label/font_sizes/font_size = 48
+Label/fonts/font = ExtResource("2_p2og6")
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xtvt1")
+
+[node name="DashProgressBar" type="TextureProgressBar" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -76.0
+offset_top = -58.0
+offset_right = 116.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+value = 50.0
+texture_under = ExtResource("2_cmiq8")
+texture_progress = ExtResource("3_es77h")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 83.0
+offset_bottom = 60.0
+
+[node name="HPLabel" type="Label" parent="HBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_stp44")
+text = "HP "

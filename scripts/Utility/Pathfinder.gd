@@ -2,6 +2,7 @@ class_name Pathfinder
 extends Node2D
 
 @export var tile_map: TileMap
+@export var jump_tiles_length: int = 3
 @export_group("Debug")
 @export var draw_graph: bool = false
 @export var test_start: Sprite2D
@@ -13,6 +14,11 @@ extends Node2D
 
 enum NodeType {Edge, Corner, Regular}
 
+var corners: Dictionary
+var edges: Dictionary
+var jump_edges: Array[Vector2i]
+
+
 var graph: AStar2D
 
 var setup = true
@@ -23,11 +29,28 @@ func _ready():
 func _process(delta):
 	if setup:
 		place_nodes()
+		#add_player()
+		
 		connect_points()
 		if draw_graph:
 			draw_connecctions()
-		draw_path()
+		#draw_path()
+		#print("jump edges")
+		#print(jump_edges)
+		#print("edges")
+		#for i in edges.keys():
+			#print(get_point_id(tile_map.to_global(tile_map.map_to_local(Vector2i(i.x, i.y - 1)))))
+		#print("corners")
+		#for i in corners.keys():
+			#print(get_point_id(tile_map.to_global(tile_map.map_to_local(Vector2i(i.x, i.y - 1)))))
 		setup = false
+	
+	#update_player()
+
+		
+
+#OMG THATS A REAL SPHAGETTI
+#Write only shii
 func place_nodes():
 	var cells = tile_map.get_used_cells(0)
 	for cell in cells:
@@ -38,28 +61,56 @@ func place_nodes():
 			parent_id = place_one_node(above)
 		
 		if cell_type == NodeType.Edge:
-			var space_state = get_world_2d().direct_space_state
-			var left = Vector2i(cell.x - 1, cell.y)
-			var right = Vector2i(cell.x + 1, cell.y)
-			
-			var right_cell_coord = tile_map.to_global(tile_map.map_to_local(right))
-			var left_cell_coord = tile_map.to_global(tile_map.map_to_local(left))
-			
-			if not right in cells:
-				place_if_intersects(right, parent_id)
-				
-			if not left in cells:
-				place_if_intersects(left, parent_id)
-	for cell in cells:
-		var cell_type = get_cell_type(cell)
+			edges[cell] = parent_id
 		if cell_type == NodeType.Corner:
-			var left = Vector2i(cell.x - 1, cell.y - 1)
-			var right = Vector2i(cell.x + 1, cell.y - 1)
+			corners[cell] = parent_id
+	
+	for cell in edges.keys():
+		var space_state = get_world_2d().direct_space_state
+		var left = Vector2i(cell.x - 1, cell.y)
+		var right = Vector2i(cell.x + 1, cell.y)
+		
+		var right_cell_coord = tile_map.to_global(tile_map.map_to_local(right))
+		var left_cell_coord = tile_map.to_global(tile_map.map_to_local(left))
+		
+		if not right in cells:
+			place_if_intersects(right, edges[cell])
 			
-			if right in cells:
-				connect_corner(cell, right)
-			if left in cells:
-				connect_corner(cell, left)
+		if not left in cells:
+			place_if_intersects(left, edges[cell])
+		
+		for i in range(1, jump_tiles_length + 1):
+			for j in range(0, 4):
+				var jump_cell_right = Vector2i(cell.x + i, cell.y + j - 1)
+				var jump_cell_left = Vector2i(cell.x - i, cell.y + j - 1)
+				#place_one_node(jump_cell_left)
+				#place_one_node(jump_cell_right)
+				
+				
+				var right_coord = tile_map.to_global(tile_map.map_to_local(jump_cell_right))
+				var left_coord = tile_map.to_global(tile_map.map_to_local(jump_cell_left))
+				
+				var right_id = get_point_id(right_coord)
+				var left_id = get_point_id(left_coord)
+				if right_id != -1 and not graph.are_points_connected(edges[cell], right_id)\
+				and not Vector2i(cell.x + 1, cell.y) in cells:
+					graph.connect_points(edges[cell], right_id, false)
+					jump_edges.append(Vector2i(edges[cell], right_id))
+				if left_id != -1 and not graph.are_points_connected(edges[cell], left_id)\
+				and not Vector2i(cell.x - 1, cell.y) in cells:
+					graph.connect_points(edges[cell], left_id, false)
+					jump_edges.append(Vector2i(edges[cell], left_id))
+					
+	
+	for cell in corners.keys():
+		var left = Vector2i(cell.x - 1, cell.y - 1)
+		var right = Vector2i(cell.x + 1, cell.y - 1)
+		
+		if right in cells:
+			connect_corner(cell, right)
+		if left in cells:
+			connect_corner(cell, left)
+	
 
 func connect_corner(cell: Vector2i, from: Vector2i):
 	var cell_coord = tile_map.to_global(tile_map.map_to_local(Vector2i(cell.x, cell.y - 1)))
@@ -70,7 +121,8 @@ func connect_corner(cell: Vector2i, from: Vector2i):
 		var point_id = get_point_id(up_pos)
 		var parent_point_id = get_point_id(cell_coord)
 		if point_id != -1 and parent_point_id != -1:
-			graph.connect_points(point_id, parent_point_id)
+			jump_edges.append(Vector2i(parent_point_id, point_id))
+			graph.connect_points(point_id, parent_point_id, true)
 				
 
 func place_if_intersects(cell: Vector2i, parent_id: int):
@@ -146,13 +198,7 @@ func connect_points():
 			
 			graph.connect_points(id, closest)
 				
-func draw_path():
-	var start_pos = graph.get_closest_point(test_start.global_position)
-	var end_pos = graph.get_closest_point(test_end.global_position)
-	var path = graph.get_id_path(start_pos, end_pos)
-	print(start_pos)
-	print(end_pos)
-	print(path)
+func draw_path(path):
 	for i in range(len(path) - 1):
 		var from_pos = graph.get_point_position(path[i])
 		var to_pos = graph.get_point_position(path[i + 1])

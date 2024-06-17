@@ -6,7 +6,10 @@ extends CharacterBody2D
 @onready var sprite = $AnimatedSprite2D
 @onready var health_handler = $HealthHandler
 @onready var hurtbox = $HurtBox
-@onready var jump_ray_cast = $JumpRayCast
+@onready var hitbox = $HitBox
+@onready var attack_ray_cast = $AttackRayCast
+
+@export var path_finder: Pathfinder
 
 var edge_check_position
 
@@ -14,6 +17,7 @@ func _ready():
 	edge_check_position = edge_check_raycast.position.x
 	health_handler.dead.connect(self.on_dead)
 	hurtbox.hurted.connect(self.on_hit)
+	
 	state_machine.entity = self
 	
 func on_hit(hitbox: HitBox):
@@ -29,14 +33,14 @@ func _process(delta):
 		sprite.flip_h = false
 	else:
 		sprite.flip_h = true
-	
 	#attack_ray_cast.scale.x = direction
-	jump_ray_cast.scale.x = direction
+	attack_ray_cast.scale.x = direction
+	hitbox.scale.x = direction
 	#hitbox.scale.x = direction
 	edge_check_raycast.position.x = -edge_check_position * direction
 	
-	if jump_ray_cast.is_colliding() and not state_machine.current_state_is("FallState"):
-		state_machine.change_state_to("JumpState")
+	if attack_ray_cast.is_colliding() and not state_machine.current_state_is("AttackState"):
+		state_machine.change_state_to("AttackState")
 	
 func _physics_process(delta):
 	move_and_slide()

@@ -85,6 +85,7 @@ speed = 200
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_q4a5n")
+damage = 1
 collision_shape = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]

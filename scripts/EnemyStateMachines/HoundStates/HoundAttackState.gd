@@ -20,6 +20,7 @@ func enter():
 func on_frame_changed():
 	if sprite.animation == animation_name:
 		if sprite.frame in range(3, 5):
+			hitbox.set_deferred("direction", state_machine.get_direction(state_machine.entity))
 			hitbox.collision_shape.set_deferred("disabled", false)
 		else:
 			hitbox.collision_shape.set_deferred("disabled", true)

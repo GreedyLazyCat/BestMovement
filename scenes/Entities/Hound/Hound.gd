@@ -10,6 +10,8 @@ extends CharacterBody2D
 @onready var health_handler = $HealthHandler
 @onready var edge_check_raycast = $EdgeCheckRight
 
+@export var path_finder: Pathfinder
+
 var edge_check_position
 
 # Called when the node enters the scene tree for the first time.
@@ -41,8 +43,8 @@ func _process(delta):
 	
 	if attack_ray_cast.is_colliding() and not state_machine.current_state_is("AttackState"):
 		state_machine.change_state_to("AttackState")
-	if jump_ray_cast.is_colliding() and not state_machine.current_state_is("FallState"):
-		state_machine.change_state_to("JumpState")
+	#if jump_ray_cast.is_colliding() and not state_machine.current_state_is("FallState"):
+		#state_machine.change_state_to("JumpState")
 
 func _physics_process(delta):
 	move_and_slide()

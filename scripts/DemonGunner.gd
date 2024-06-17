@@ -1,6 +1,8 @@
 class_name GunnerDemon
 extends CharacterBody2D
 
+@export var path_finder: Pathfinder
+
 @onready var hurtbox = $HurtBox
 @onready var health_handler = $HealthHandler
 @onready var parts = preload("res://scenes/Entities/GunnerDemon/DemonGunnerParts.tscn")
@@ -55,8 +57,8 @@ func _process(delta):
 	edge_check_ray_cast.position.x = edge_check_position * get_direction()
 	
 	
-	if jump_ray_cast.is_colliding() and not state_machine.current_state_is("JumpState"):
-		state_machine.change_state_to("JumpState")
+	#if jump_ray_cast.is_colliding() and not state_machine.current_state_is("JumpState"):
+		#state_machine.change_state_to("JumpState")
 	
 	if shoot_ray_cast.is_colliding() \
 	and not state_machine.current_state_is("ShootState")\

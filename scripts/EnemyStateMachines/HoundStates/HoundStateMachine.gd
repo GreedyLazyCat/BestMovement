@@ -22,17 +22,19 @@ func _ready():
 
 func on_player_detected(body):
 	if body is Player and not is_chasing:
+		player = body
 		if not current_state_is("StunState"):
 			change_state_to("ChaseState")
-		else:
-			print("zalupa")
-		player = body
 		is_chasing = true
 		is_player_in_detection_area = true
 
 func on_player_leaved(body):
 	if body is Player:
 		is_player_in_detection_area = false
+
+func _physics_process(delta):
+	get_direction(entity)
+	super(delta)
 
 func change_state(from: State, to: String):
 	if is_chasing and (to == "IdleState" or to == "WanderState"):

@@ -14,10 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://ckyqqv3x10bqi" path="res://assets/entities/hound/demon-hound-prepare-jump.png" id="7_hg3u2"]
 [ext_resource type="Script" path="res://scripts/hitbox/HurtBox.gd" id="10_i3qj7"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityChaseState.gd" id="10_nmyr6"]
-[ext_resource type="Script" path="res://scripts/HealthHandler.gd" id="11_o5rms"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/HoundStates/HoundAttackState.gd" id="12_6of5l"]
 [ext_resource type="Script" path="res://scripts/hitbox/HitBox.gd" id="14_nhupi"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EnityJumpState.gd" id="15_u11vv"]
+[ext_resource type="Script" path="res://scripts/Handlers/HealthHandler.gd" id="17_bw54l"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v5awv"]
 atlas = ExtResource("2_hpsva")
@@ -286,7 +286,6 @@ fall_land_animation_name = "FallLand"
 
 [node name="ChaseState" type="Node" parent="HoundStateMachine"]
 script = ExtResource("10_nmyr6")
-animation_name = "Run"
 
 [node name="AttackState" type="Node" parent="HoundStateMachine" node_paths=PackedStringArray("hitbox")]
 script = ExtResource("12_6of5l")
@@ -315,8 +314,8 @@ position = Vector2(0, 26.5)
 shape = SubResource("RectangleShape2D_v4dws")
 
 [node name="HealthHandler" type="Node" parent="."]
-script = ExtResource("11_o5rms")
-max_health = 40
+script = ExtResource("17_bw54l")
+max_health = 2
 
 [node name="DetectionArea" type="Area2D" parent="."]
 
@@ -328,6 +327,7 @@ shape = SubResource("RectangleShape2D_s6uo2")
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("14_nhupi")
+damage = 1
 collision_shape = NodePath("CollisionShape2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
