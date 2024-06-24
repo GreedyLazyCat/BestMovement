@@ -9,6 +9,7 @@ extends CharacterBody2D
 @onready var health_handler = $HealthHandler
 @onready var movement_handler = $InputMovementHandler
 @onready var wall_slide_raycast = $WallSlideRayCast
+@onready var color_hit_timer = $ColotHitTimer
 
 
 @export var invinsible_dash: bool = false
@@ -17,6 +18,7 @@ extends CharacterBody2D
 @export var shake_offset: float
 @export_group("Debug")
 @export var print_current_state: bool
+@export var print_direction: bool
 
 
 
@@ -41,7 +43,7 @@ func death_stagger(time:float):
 	await timer.timeout
 	Engine.time_scale = prev
 
-func on_hurt():
+func on_hurt(is_blocked: bool):
 	camera_offset = shake_offset
 
 func random_offset() -> Vector2:
@@ -49,11 +51,17 @@ func random_offset() -> Vector2:
 	
 func on_hit(hurting_hitbox: HitBox):
 	camera_offset = shake_offset
-	if not state_machine.current_state_is("BlockState"):
-		color_hit(Vector4(255.0,255.0,255.0,255.0), 1, 0.1)
-		health_handler.deal_damage(hurting_hitbox.damage)
-	else:
-		movement_handler.await_block_awailable(1.5)
+	#redo this
+	if hurting_hitbox.is_blockable() and state_machine.current_state_is("BlockState"):
+		if get_direction() != -hurting_hitbox.direction:
+			color_hit(Vector4(255.0,255.0,255.0,255.0), 1, 0.1)
+			health_handler.deal_damage(hurting_hitbox.damage)
+		state_machine.player.velocity.x = state_machine.speed * hurting_hitbox.direction
+		state_machine.change_state_to("StunState")
+		movement_handler.start_block_await()
+		return
+	color_hit_timer.color_hit(Vector4(255.0,255.0,255.0,255.0), 1)
+	health_handler.deal_damage(hurting_hitbox.damage)
 
 func on_death():
 	state_machine.change_state_to("DeathState")
@@ -73,6 +81,8 @@ func _process(delta):
 	
 	if print_current_state:
 		print(state_machine.current_state.name)
+	if print_direction:
+		print(get_direction())
 	
 
 func _physics_process(delta):

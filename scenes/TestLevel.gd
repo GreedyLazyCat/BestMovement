@@ -17,3 +17,7 @@ func _process(delta):
 		player.health_handler.deal_damage(2000)
 	if Input.is_action_just_pressed("dash_unkill"):
 		player.invinsible_dash = not player.invinsible_dash
+	if Input.is_action_just_pressed("debug_slowmo"):
+		Engine.time_scale = 0.1
+	if Input.is_action_just_released("debug_slowmo"):
+		Engine.time_scale = 1

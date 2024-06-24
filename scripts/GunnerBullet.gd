@@ -12,9 +12,18 @@ func _ready():
 	hitbox.hitted.connect(self.on_hurt)
 	sprite.animation_finished.connect(self.on_anim_finished)
 	hitbox.direction = direction
+
+func get_dir_from_bool(from: bool):
+	return -1 if from else 1
+
+func on_hurt(is_blocking: bool):
 	
-func on_hurt():
-	sprite.play("Explosion")
+	if is_blocking and get_dir_from_bool(player.sprite.flip_h) != direction:
+		direction *= -1
+		hitbox.set_collision_layer_value(32, true)
+		
+	else:
+		sprite.play("Explosion")
 	
 func on_anim_finished():
 	if sprite.animation == "Explosion":

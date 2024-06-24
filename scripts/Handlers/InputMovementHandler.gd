@@ -5,6 +5,13 @@ extends Node
 @export var jump_ray_cast: RayCast2D
 @export var wall_slide_ray_cast: RayCast2D
 @export var dash_bar_handler: DashBarHandler
+@export var await_block_time: float
+@export_group("Block")
+@export var attack_after_block_time: float
+@export var attack_after_block_decrease_amount: float
+var block_time: float
+var need_to_handle_block: bool
+
 
 var current_speed: float
 
@@ -16,20 +23,22 @@ func _physics_process(delta):
 		jump_buffered = false
 		state_machine.change_state_to("JumpState")
 	
-	if Input.is_action_pressed("left"):
+	var action_strength = Input.get_action_strength("right") - Input.get_action_strength("left")
+	
+	if action_strength != 0:
 		if state_machine.current_state.is_h_movement_allowed:
 			current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
-			state_machine.player.velocity.x = -current_speed
+			state_machine.player.velocity.x = action_strength * current_speed
 			
 			if state_machine.player.is_on_floor():
 				state_machine.change_state_to("MoveState")
 				
-	if Input.is_action_pressed("right"):
-		if state_machine.current_state.is_h_movement_allowed:
-			current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
-			state_machine.player.velocity.x = current_speed
-			if state_machine.player.is_on_floor():
-				state_machine.change_state_to("MoveState")
+	#if Input.is_action_pressed("right"):
+		#if state_machine.current_state.is_h_movement_allowed:
+			#current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
+			#state_machine.player.velocity.x = current_speed
+			#if state_machine.player.is_on_floor():
+				#state_machine.change_state_to("MoveState")
 			
 	
 	if Input.is_action_just_pressed("jump"):
@@ -49,16 +58,23 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("attack"):
 		if state_machine.current_state.is_attack_allowed:
 			state_machine.change_state_to("AttackState")
+			if state_machine.prev_state_is("BlockState"):
+					start_block_await()
 	
 	if Input.is_action_just_pressed("block") and can_use_block:
 		if state_machine.current_state.is_block_allowed:
 			if not state_machine.current_state_is("BlockState"):
 				state_machine.change_state_to("BlockState")
-	if Input.is_action_just_released("block") and can_use_block:
-		if state_machine.current_state.is_block_allowed:
+				if state_machine.prev_state_is("AttackState"):
+					start_block_await()
+	
+	if Input.is_action_just_released("block"):
+		if state_machine.current_state_is("BlockState"):
 			state_machine.change_state_to("IdleState")
-		
+			
 	handle_wall_slide()
+	
+	await_block_awailable(delta)
 	
 	if get_input_direction() == 0 and state_machine.current_state_is("MoveState"):
 		current_speed = 0
@@ -69,17 +85,24 @@ func _physics_process(delta):
 func get_input_direction():
 	return Input.get_action_strength("left") * -1 + Input.get_action_strength("right")
 
+func start_block_await():
+	need_to_handle_block = true
+	block_time = attack_after_block_time
+
 func handle_wall_slide():
-	if wall_slide_ray_cast.is_colliding() and not state_machine.player.is_on_floor():
+	if wall_slide_ray_cast.is_colliding() and not state_machine.player.is_on_floor() \
+	and state_machine.current_state.is_wall_slide_allowed:
 		var direction = wall_slide_ray_cast.get_collision_normal().x
 		if not state_machine.current_state_is("WallSlide") and get_input_direction() == -direction:
 			state_machine.change_state_to("WallSlide")
 
-func await_block_awailable(time: float):
-	var timer = get_tree().create_timer(time)
-	can_use_block = false
-	await timer.timeout
-	can_use_block = true
+func await_block_awailable(delta):
+	if need_to_handle_block:
+		can_use_block = false
+		block_time = max(block_time - attack_after_block_decrease_amount * delta, 0)
+		if block_time == 0:
+			need_to_handle_block = false
+			can_use_block = true
 
 func is_able_to_jump() -> bool:
 	return true

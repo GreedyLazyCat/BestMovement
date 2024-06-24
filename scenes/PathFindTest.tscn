@@ -376,13 +376,11 @@ path_finder = NodePath("../Pathfinder")
 [node name="Player" parent="." instance=ExtResource("4_vggq6")]
 position = Vector2(340, 367)
 
-[node name="Pathfinder" type="Node2D" parent="." node_paths=PackedStringArray("tile_map", "test_start", "test_end")]
+[node name="Pathfinder" type="Node2D" parent="." node_paths=PackedStringArray("tile_map")]
 script = ExtResource("2_dugrv")
 tile_map = NodePath("../TileMap")
 jump_tiles_length = 4
 draw_graph = true
-test_start = NodePath("../Sprite2D")
-test_end = NodePath("../Sprite2D2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(578, 333)

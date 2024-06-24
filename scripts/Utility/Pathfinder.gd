@@ -5,8 +5,7 @@ extends Node2D
 @export var jump_tiles_length: int = 3
 @export_group("Debug")
 @export var draw_graph: bool = false
-@export var test_start: Sprite2D
-@export var test_end: Sprite2D
+@export var print_jump_edges: bool = false
 
 
 @onready var path_node = preload("res://scenes/Utility/PathNode.tscn")
@@ -36,7 +35,8 @@ func _process(delta):
 			draw_connecctions()
 		#draw_path()
 		#print("jump edges")
-		#print(jump_edges)
+		if print_jump_edges:
+			print(jump_edges)
 		#print("edges")
 		#for i in edges.keys():
 			#print(get_point_id(tile_map.to_global(tile_map.map_to_local(Vector2i(i.x, i.y - 1)))))

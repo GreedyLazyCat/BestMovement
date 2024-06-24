@@ -30,8 +30,13 @@ func _physics_process(delta):
 	get_direction(entity)
 	super(delta)
 
+func change_state_to(state_name: String):
+	if current_state.name == "StunState":
+		return
+	super(state_name)
+
 func change_state(from: State, to: String):
 	if is_chasing and (to == "IdleState" or to == "WanderState"):
-		change_state_to("ChaseState")
+		super(from, "ChaseState")
 		return
 	super(from, to)

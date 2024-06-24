@@ -3,6 +3,7 @@ extends PlayerState
 
 
 func enter():
+	state_machine.walk_particles.emitting = false
 	is_v_movement_allowed = false
 	#is_block_allowed = false
 	is_h_movement_allowed = true

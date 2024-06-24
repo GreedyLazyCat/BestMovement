@@ -36,3 +36,6 @@ func on_anim_finish():
 func update_physics(delta):
 	var entity = get_state_machine().entity
 	entity.velocity.x = lerp(entity.velocity.x, 0.0, 0.35)
+
+func exit():
+	hitbox.collision_shape.set_deferred("disabled", true)

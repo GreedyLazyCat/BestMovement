@@ -54,6 +54,7 @@ func update_physics(delta):
 				if edge in path_finder.jump_edges:
 					var jump_distance = abs(path[next_path_point].x - state_machine.entity.global_position.x)
 					state_machine.speed = jump_distance / (state_machine.jump_time_to_peak + state_machine.jump_time_to_descent)
+					state_machine.entity.velocity.x = 1 * sign(direction.x)
 					transitioned.emit(self, "JumpState")
 				current_path_point = next_path_point
 			else:

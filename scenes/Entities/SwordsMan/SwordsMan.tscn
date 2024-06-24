@@ -1,10 +1,11 @@
-[gd_scene load_steps=68 format=3 uid="uid://3drfuk1mstfe"]
+[gd_scene load_steps=76 format=3 uid="uid://3drfuk1mstfe"]
 
 [ext_resource type="Texture2D" uid="uid://c2q8f7k0r0o2e" path="res://assets/entities/swordsman/demon-swordsman-idle.png" id="1_c5e0y"]
 [ext_resource type="Texture2D" uid="uid://bcineqrncork5" path="res://assets/entities/swordsman/demon-swordsman-falling.png" id="1_iwtjr"]
 [ext_resource type="Script" path="res://scripts/SwordsMan.gd" id="1_up65u"]
 [ext_resource type="Texture2D" uid="uid://13tib2ohwqi8" path="res://assets/entities/swordsman/demon-swordsman-charge-stab.png" id="2_0vf03"]
 [ext_resource type="Texture2D" uid="uid://c3xubsfqatn57" path="res://assets/entities/swordsman/demon-swordsman-fall-recovery.png" id="2_3q4tf"]
+[ext_resource type="Shader" uid="uid://0uo8t2iop42t" path="res://shaders/HitShader.tres" id="2_817jc"]
 [ext_resource type="Texture2D" uid="uid://bpmcawvqrw4gf" path="res://assets/entities/swordsman/demon-swordsman-moving.png" id="4_emo5k"]
 [ext_resource type="Texture2D" uid="uid://dib868x1vllks" path="res://assets/entities/swordsman/demon-swordsman-jumping.png" id="5_ikbu1"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/SwordsManStates/SwordsManStateMachine.gd" id="5_ncgl2"]
@@ -14,13 +15,22 @@
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityWanderState.gd" id="7_1nllj"]
 [ext_resource type="Texture2D" uid="uid://6fp1pkvts4cd" path="res://assets/entities/swordsman/demon-swordsman-attack-leap.png" id="8_hl1tx"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityFallState.gd" id="8_hqi0y"]
+[ext_resource type="Texture2D" uid="uid://dar44qj806fg5" path="res://assets/entities/swordsman/demon-swordsman-knockback.png" id="8_tb8xj"]
 [ext_resource type="Texture2D" uid="uid://5q8uts2p1mms" path="res://assets/entities/swordsman/demon-swordsman-attack-landed.png" id="9_cr557"]
 [ext_resource type="Texture2D" uid="uid://ba3eg8alu45kl" path="res://assets/entities/swordsman/demon-swordsman-attack-prepare-leap.png" id="10_6ihsy"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EnityJumpState.gd" id="10_yb2hh"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityChaseState.gd" id="13_rw5gf"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/SwordsManStates/AttackState.gd" id="18_ser25"]
+[ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityStunState.gd" id="19_l55i3"]
 [ext_resource type="Script" path="res://scripts/Handlers/HealthHandler.gd" id="20_m42fs"]
 [ext_resource type="Script" path="res://scripts/hitbox/HitBox.gd" id="21_8plj8"]
+[ext_resource type="Script" path="res://scripts/Utility/ColorHitTimer.gd" id="24_wnfb0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2thq"]
+resource_local_to_scene = true
+shader = ExtResource("2_817jc")
+shader_parameter/FillColor = Color(1, 1, 1, 0)
+shader_parameter/Amount = null
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_siw0b"]
 atlas = ExtResource("2_0vf03")
@@ -113,6 +123,10 @@ region = Rect2(64, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_nug4y"]
 atlas = ExtResource("6_a2357")
 region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkrpg"]
+atlas = ExtResource("8_tb8xj")
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pb6ar"]
 atlas = ExtResource("8_hl1tx")
@@ -293,6 +307,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_hkrpg")
+}],
+"loop": false,
+"name": &"Knockback",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_pb6ar")
 }],
 "loop": false,
@@ -383,6 +405,15 @@ size = Vector2(165.25, 40)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m5v4h"]
 size = Vector2(19, 15)
 
+[sub_resource type="Gradient" id="Gradient_0atil"]
+offsets = PackedFloat32Array(0, 0.782857)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qav66"]
+gradient = SubResource("Gradient_0atil")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="SwordsMan" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 16
@@ -390,8 +421,9 @@ script = ExtResource("1_up65u")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_j2thq")
 sprite_frames = SubResource("SpriteFrames_br35j")
-animation = &"LeapLand"
+animation = &"Knockback"
 offset = Vector2(3, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -439,6 +471,12 @@ script = ExtResource("18_ser25")
 hitbox = NodePath("../../HitBox")
 stab_speed_multiply = 3.5
 
+[node name="StunState" type="Node" parent="SwordsManStateMachine"]
+script = ExtResource("19_l55i3")
+animation_name = "Knockback"
+state_after_stun = "IdleState"
+stun_time_sec = 0.8
+
 [node name="HurtBox" type="Area2D" parent="." node_paths=PackedStringArray("collision_shape")]
 collision_layer = 0
 collision_mask = 32
@@ -478,3 +516,16 @@ collision_shape = NodePath("CollisionShape2D")
 position = Vector2(13.5, 24.5)
 shape = SubResource("RectangleShape2D_m5v4h")
 disabled = true
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(1, 21)
+color = Color(1, 0.350913, 0.284113, 1)
+texture = SubResource("GradientTexture2D_qav66")
+texture_scale = 0.5
+
+[node name="ColotHitTimer" type="Timer" parent="." node_paths=PackedStringArray("sprite")]
+process_callback = 0
+wait_time = 0.1
+one_shot = true
+script = ExtResource("24_wnfb0")
+sprite = NodePath("../AnimatedSprite2D")

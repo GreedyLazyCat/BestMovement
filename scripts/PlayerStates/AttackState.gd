@@ -7,11 +7,25 @@ var queue: String
 
 @export var hitbox: HitBox
 @export var attack_shift: int
+@export var block_allow_time: float
+@export var block_decrease_amount: float
+
+var block_timer: InCodeTimer
+
+func _ready():
+	block_timer = InCodeTimer.new()
+	block_timer.timer_step = block_decrease_amount
+	block_timer.max_time = block_allow_time
+	block_timer.timeout.connect(self.block_allow)
 
 func enter():
 	is_h_movement_allowed = false
 	is_v_movement_allowed = false
 	is_dash_allowed = false
+	is_wall_slide_allowed = false
+	is_block_allowed = false
+	
+	block_timer.start()
 	
 	state_machine.player.velocity.y = 0
 	
@@ -23,10 +37,19 @@ func enter():
 	
 	queue = ''
 	
+	
+	#block_current = block_allow_time
+	
 	hitbox.direction = state_machine.player.get_direction()
+	
 	
 	if not state_machine.sprite.animation_finished.is_connected(self.on_anim_finish):
 		state_machine.sprite.animation_finished.connect(self.on_anim_finish)
+
+func block_allow():
+	if state_machine.current_state == self:
+		is_block_allowed = true
+		
 
 func update(delta):
 	if Input.is_action_just_pressed("attack"):
@@ -45,10 +68,8 @@ func update(delta):
 			hitbox.collision_shape.set_deferred("disabled", true)
 			state_machine.player.velocity.x = 0
 		if state_machine.sprite.frame > 1:
-			is_block_allowed = true
 			is_dash_allowed = true
 		else:
-			is_block_allowed = false
 			is_dash_allowed = false
 
 func on_anim_finish():
@@ -64,7 +85,9 @@ func on_anim_finish():
 			queue = ''
 
 func update_physics(delta):
+	block_timer.process_timer(delta)
 	state_machine.player.velocity.x = lerp(state_machine.player.velocity.x, 0.0, 0.35)
+
 
 func get_next_anim(anim: String):
 	var animations = ground_combo_animations
@@ -79,4 +102,5 @@ func get_next_anim(anim: String):
 	return animations[index]
 
 func exit():
+	is_block_allowed = false
 	hitbox.collision_shape.set_deferred("disabled", true)

@@ -1,0 +1,109 @@
+[gd_scene load_steps=13 format=3 uid="uid://coo5aut7eim88"]
+
+[ext_resource type="Script" path="res://scripts/Utility/EntityParts.gd" id="1_rd3eq"]
+[ext_resource type="Texture2D" uid="uid://c7e4836soj3c5" path="res://assets/entities/swordsman/parts/demon-swordsman-head.png" id="2_5iksc"]
+[ext_resource type="Texture2D" uid="uid://c280xfjk14fek" path="res://assets/entities/swordsman/parts/demon-swordsman-body.png" id="3_h261w"]
+[ext_resource type="Texture2D" uid="uid://dybnww3ptcs4g" path="res://assets/entities/swordsman/parts/demon-swordsman-weapon.png" id="4_dbkhu"]
+[ext_resource type="Texture2D" uid="uid://xn2usv6jyhgh" path="res://assets/entities/swordsman/parts/demon-swordsman-left-leg.png" id="5_l0qii"]
+[ext_resource type="Texture2D" uid="uid://mgqbs5ni8ptu" path="res://assets/entities/swordsman/parts/demon-swordsman-right-leg.png" id="6_xituw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0i0rq"]
+radius = 3.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_78aw8"]
+particle_flag_disable_z = true
+angular_velocity_min = -53.62
+angular_velocity_max = 260.43
+radial_velocity_max = 21.28
+gravity = Vector3(0, 30, 0)
+color = Color(0.984168, 5.87195e-06, 1.15514e-06, 1)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_d71kc"]
+radius = 4.0
+height = 8.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7v477"]
+radius = 2.0
+height = 18.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b8r87"]
+radius = 2.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_88mfw"]
+radius = 2.0
+height = 6.0
+
+[node name="SwordsManParts" type="Node2D" node_paths=PackedStringArray("parts")]
+script = ExtResource("1_rd3eq")
+parts = [NodePath("head"), NodePath("body"), NodePath("weapon"), NodePath("left leg"), NodePath("right leg")]
+
+[node name="head" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="head"]
+texture_filter = 1
+texture = ExtResource("2_5iksc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="head"]
+position = Vector2(-1, 17)
+shape = SubResource("CircleShape2D_0i0rq")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="head"]
+z_index = -1
+position = Vector2(-1, 20)
+process_material = SubResource("ParticleProcessMaterial_78aw8")
+lifetime = 0.2
+speed_scale = 0.7
+randomness = 0.17
+
+[node name="body" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="body"]
+texture_filter = 1
+texture = ExtResource("3_h261w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body"]
+position = Vector2(-4, 23)
+shape = SubResource("CapsuleShape2D_d71kc")
+
+[node name="weapon" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="weapon"]
+texture_filter = 1
+texture = ExtResource("4_dbkhu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="weapon"]
+position = Vector2(2, 26)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_7v477")
+
+[node name="left leg" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="left leg"]
+texture_filter = 1
+texture = ExtResource("5_l0qii")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left leg"]
+position = Vector2(0, 30)
+rotation = -0.612611
+shape = SubResource("CapsuleShape2D_b8r87")
+
+[node name="right leg" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="right leg"]
+texture_filter = 1
+texture = ExtResource("6_xituw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="right leg"]
+position = Vector2(-6, 30)
+shape = SubResource("CapsuleShape2D_88mfw")

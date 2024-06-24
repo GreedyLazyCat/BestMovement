@@ -9,7 +9,8 @@ extends CharacterBody2D
 @onready var hitbox = $HitBox
 @onready var health_handler = $HealthHandler
 @onready var edge_check_raycast = $EdgeCheckRight
-
+@onready var color_hit_timer = $ColotHitTimer
+@onready var parts = preload("res://scenes/Entities/Hound/HoudParts.tscn")
 @export var path_finder: Pathfinder
 
 var edge_check_position
@@ -19,14 +20,27 @@ func _ready():
 	edge_check_position = edge_check_raycast.position.x
 	state_machine.entity = self
 	hurtbox.hurted.connect(self.on_hit)
+	hitbox.hitted.connect(self.on_hurt)
+	hurtbox.set_collision_mask_value(32, true)
 	health_handler.dead.connect(self.on_death)
 
 func on_death():
+	var new_parts = parts.instantiate() as EntityParts
+	
+	get_tree().root.call_deferred("add_child", new_parts)
+	new_parts.set_deferred("global_position", global_position) 
+	new_parts.call_deferred("apply_impulses", state_machine.player.get_direction())
+	new_parts.call_deferred("start_deletion_timer")
 	queue_free()
 
-	
+func on_hurt(is_blocking: bool):
+	if is_blocking:
+		state_machine.change_state_to("StunState")
+		state_machine.entity.velocity.x = state_machine.speed * -state_machine.get_direction(state_machine.entity)
+
 func on_hit(hitbox: HitBox):
 	health_handler.deal_damage(hitbox.damage)
+	color_hit_timer.color_hit(Vector4(255.0,255.0,255.0,255.0), 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

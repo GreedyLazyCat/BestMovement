@@ -4,6 +4,8 @@ extends PlayerState
 @export var coyote_time: float = 0.1
 
 func enter():
+	state_machine.walk_particles.emitting = false
+	is_v_movement_allowed = false
 	if state_machine.prev_state_is("WallSlide") or state_machine.prev_state_is("MoveState"):
 		is_v_movement_allowed = true
 		get_tree().create_timer(coyote_time).timeout.connect(self.disable_v_movement)

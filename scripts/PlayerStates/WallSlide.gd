@@ -4,11 +4,12 @@ extends PlayerState
 @export var ray_cast: RayCast2D
 @export var slow_amout: float
 
+
 func _ready():
 	assert(ray_cast, "RayCast isnt connected")
 	
 func enter():
-	
+	state_machine.walk_particles.emitting = false
 	is_h_movement_allowed = false
 	state_machine.sprite.play("WallSlide")
 	state_machine.player.velocity.x = 0

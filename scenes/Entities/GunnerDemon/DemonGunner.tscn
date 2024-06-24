@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://cdio3mceftpbr"]
+[gd_scene load_steps=59 format=3 uid="uid://cdio3mceftpbr"]
 
 [ext_resource type="Texture2D" uid="uid://bc00pmh2dbgg7" path="res://assets/entities/demon_gunner/demon-gunner-idle.png" id="1_m1xby"]
 [ext_resource type="Script" path="res://scripts/DemonGunner.gd" id="1_rkc6s"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/DemonGunnerStates/StunState.gd" id="19_ehgqb"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityWanderState.gd" id="19_x4a28"]
 [ext_resource type="Script" path="res://scripts/EnemyStateMachines/GeneralEntityState/EntityFallState.gd" id="19_yqtmn"]
+[ext_resource type="Script" path="res://scripts/Utility/ColorHitTimer.gd" id="20_5xj5s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1nml6"]
 resource_local_to_scene = true
@@ -373,7 +374,10 @@ script = ExtResource("18_mnxt5")
 
 [node name="GunnerStunState" type="Node" parent="GunnerStateMachine"]
 script = ExtResource("19_ehgqb")
-stun_time = 2.0
+animation_name = "Idle"
+state_after_stun = "IdleState"
+stun_time_sec = 2.0
+alpha_flash_count = 4
 
 [node name="GunnerWanderState" type="Node" parent="GunnerStateMachine" node_paths=PackedStringArray("edge_check")]
 script = ExtResource("19_x4a28")
@@ -404,3 +408,10 @@ shape = SubResource("RectangleShape2D_4h561")
 position = Vector2(0, 24)
 target_position = Vector2(117, 0)
 collision_mask = 4
+
+[node name="ColorHitTimer" type="Timer" parent="." node_paths=PackedStringArray("sprite")]
+process_callback = 0
+wait_time = 0.1
+one_shot = true
+script = ExtResource("20_5xj5s")
+sprite = NodePath("../AnimatedSprite2D")

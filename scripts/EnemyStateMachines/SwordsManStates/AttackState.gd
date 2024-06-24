@@ -7,16 +7,22 @@ var attack_phase: bool = true
 @export var stab_damage: int = 1
 @export var leap_damage: int = 2
 
+var direction_to_player
+
 func _ready():
 	assert(hitbox, "HitBox is not connected")
 
 func enter():
+	
 	state_machine.entity.velocity.x = 0
 	if attack_phase:
 		hitbox.set_deferred("damage", stab_damage)
 		state_machine.sprite.play("ChargeStab")
+		hitbox.set_deferred("damage_type", hitbox.DamageType.Blockable)
+		direction_to_player = sign(state_machine.entity.global_position.direction_to(state_machine.player.global_position).x)
 	else:
 		hitbox.set_deferred("damage", leap_damage)
+		hitbox.set_deferred("damage_type", hitbox.DamageType.Unblockable)
 		state_machine.sprite.play("LeapPrep")
 	if not state_machine.sprite.animation_finished.is_connected(self.on_anim_finish):
 		state_machine.sprite.animation_finished.connect(self.on_anim_finish)
@@ -36,14 +42,14 @@ func on_anim_finish():
 	if state_machine.sprite.animation == "LeapPrep":
 		state_machine.sprite.play("LeapJump")
 		hitbox.set_deferred("direction", state_machine.get_direction(state_machine.entity))
-		
 		hitbox.collision_shape.set_deferred("disabled", false)
 		var distance = abs(state_machine.player.global_position.x - state_machine.entity.global_position.x)
 		var speed = distance / (state_machine.jump_time_to_descent + state_machine.jump_time_to_peak)
-		state_machine.entity.velocity.x = speed * state_machine.get_direction(state_machine.entity)
+		state_machine.entity.velocity.x = speed * direction_to_player
 		state_machine.entity.velocity.y = state_machine.jump_velocity
 	elif state_machine.sprite.animation == "LeapLand":
 		next_attack_phase()
+		
 		transitioned.emit(self, "IdleState")
 		hitbox.collision_shape.set_deferred("disabled", true)
 	elif state_machine.sprite.animation == "ChargeStab":
@@ -71,6 +77,9 @@ func update_physics(delta):
 	if state_machine.sprite.animation == "ChargeStab":
 		if state_machine.sprite.frame in range(7, 11):
 				state_machine.entity.velocity.x = state_machine.speed * stab_speed_multiply\
-				 * state_machine.get_direction(state_machine.entity)
+				 * direction_to_player
 		elif state_machine.sprite.frame in range(11, 14):
 			state_machine.entity.velocity.x = lerp(state_machine.entity.velocity.x, 0.0, 0.2)
+func exit():
+	hitbox.set_deferred("damage_type", hitbox.DamageType.Blockable)
+	hitbox.collision_shape.set_deferred("disabled", true)

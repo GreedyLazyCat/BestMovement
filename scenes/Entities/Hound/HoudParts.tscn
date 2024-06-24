@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=3 uid="uid://cd1u55thwnsm2"]
+
+[ext_resource type="Script" path="res://scripts/Utility/EntityParts.gd" id="1_grwhq"]
+[ext_resource type="Texture2D" uid="uid://dru86t2cfxece" path="res://assets/entities/hound/parts/hound-parts-head.png" id="2_iusdm"]
+[ext_resource type="Texture2D" uid="uid://bggole4juncdw" path="res://assets/entities/hound/parts/hound-parts-body.png" id="3_bgxwo"]
+[ext_resource type="Texture2D" uid="uid://cf12j0hujmmc3" path="res://assets/entities/hound/parts/hound-parts-leg-left.png" id="4_ig8he"]
+[ext_resource type="Texture2D" uid="uid://28alqnqacvty" path="res://assets/entities/hound/parts/hound-parts-leg-right.png" id="5_5xtqp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jbevr"]
+radius = 4.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ciud8"]
+radius = 3.0
+height = 10.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_khruk"]
+radius = 3.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v2wdl"]
+radius = 3.0
+height = 8.0
+
+[node name="HoudParts" type="Node2D" node_paths=PackedStringArray("parts")]
+script = ExtResource("1_grwhq")
+parts = [NodePath("head"), NodePath("body"), NodePath("leg_left"), NodePath("leg_right")]
+
+[node name="head" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="head"]
+texture_filter = 1
+texture = ExtResource("2_iusdm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="head"]
+position = Vector2(5, 23)
+shape = SubResource("CircleShape2D_jbevr")
+
+[node name="body" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="body"]
+texture_filter = 1
+texture = ExtResource("3_bgxwo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body"]
+position = Vector2(-2, 25)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ciud8")
+
+[node name="leg_left" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="leg_left"]
+texture_filter = 1
+texture = ExtResource("4_ig8he")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leg_left"]
+position = Vector2(-5, 29)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_khruk")
+
+[node name="leg_right" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="leg_right"]
+texture_filter = 1
+texture = ExtResource("5_5xtqp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leg_right"]
+position = Vector2(3, 28)
+rotation = 2.16595
+shape = SubResource("CapsuleShape2D_v2wdl")

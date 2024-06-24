@@ -11,6 +11,7 @@ extends CharacterBody2D
 @onready var jump_ray_cast = $RayCast2D
 @onready var shoot_ray_cast = $ShootRayCast
 @onready var edge_check_ray_cast = $EdgeCheckLeft
+@onready var color_hit_timer = $ColorHitTimer
 
 var edge_check_position 
 
@@ -25,7 +26,7 @@ func _ready():
 	hurtbox.hurted.connect(self.on_hit)
 	health_handler.dead.connect(self.on_death)
 	state_machine.entity = self
-	
+	hurtbox.set_collision_mask_value(32, true)
 	
 
 
@@ -33,7 +34,7 @@ func on_hit(hitbox: HitBox):
 	damage_direction = hitbox.direction
 	health_handler.deal_damage(hitbox.damage)
 	state_machine.change_state_to("StunState")
-	color_hit(Vector4(255.0,255.0,255.0,255.0), 1, 0.1)
+	color_hit_timer.color_hit(Vector4(255.0,255.0,255.0,255.0), 1)
 
 func on_death():
 	var new_parts = parts.instantiate() as DemonGunnerParts
@@ -68,13 +69,6 @@ func _process(delta):
 	
 func _physics_process(delta):
 	move_and_slide()
-
-func color_hit(color:Vector4, alpha:float, duration):
-	sprite.material.set_shader_parameter('Amount', alpha)
-	sprite.material.set_shader_parameter('FillColor', color)
-	var timer = get_tree().create_timer(duration)
-	await timer.timeout
-	sprite.material.set_shader_parameter('Amount', 0.0)
 
 func get_direction() -> int:
 	direction = sign(velocity.x)

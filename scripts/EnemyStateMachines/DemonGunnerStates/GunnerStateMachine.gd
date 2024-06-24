@@ -27,8 +27,6 @@ func on_player_detected(body):
 		player = body
 		if not current_state_is("StunState"):
 			change_state_to("ChaseState")
-		else:
-			print("zalupa")
 		is_chasing = true
 		is_player_in_detection_area = true
 
