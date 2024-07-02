@@ -1,0 +1,96 @@
+[gd_scene load_steps=10 format=3 uid="uid://dxskkc5gqyaj5"]
+
+[ext_resource type="Script" path="res://scripts/Level/MainMenu.gd" id="1_hb1kd"]
+[ext_resource type="Texture2D" uid="uid://djl4xg5wdp27n" path="res://assets/backgrounds/back1.png" id="2_i7iv8"]
+[ext_resource type="Shader" path="res://shaders/wave.gdshader" id="2_sitfo"]
+[ext_resource type="PackedScene" uid="uid://bkckxcwup4pfa" path="res://scenes/Controls/MenuButton.tscn" id="2_xyug1"]
+[ext_resource type="Theme" uid="uid://dh6pnwbjniwke" path="res://themes/TitleTExt.tres" id="3_p0vjy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xid0r"]
+shader = ExtResource("2_sitfo")
+shader_parameter/frequency = 2.0
+shader_parameter/amount = 4.0
+
+[sub_resource type="Animation" id="Animation_g8c83"]
+resource_name = "InTransition"
+
+[sub_resource type="Animation" id="Animation_6nbnn"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mah3e"]
+_data = {
+"InTransition": SubResource("Animation_g8c83"),
+"RESET": SubResource("Animation_6nbnn")
+}
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_hb1kd")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="LevelUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/LevelUI"]
+modulate = Color(0.3381, 0.3381, 0.3381, 1)
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 728.0
+offset_bottom = 472.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_i7iv8")
+
+[node name="Label" type="Label" parent="CanvasLayer/LevelUI"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_xid0r")
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 50.0
+offset_right = 300.0
+offset_bottom = 177.0
+grow_horizontal = 2
+theme = ExtResource("3_p0vjy")
+text = "Kill' Em!"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/LevelUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -32.0
+offset_right = 80.0
+offset_bottom = 32.0001
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuButton" parent="CanvasLayer/LevelUI/VBoxContainer" instance=ExtResource("2_xyug1")]
+layout_mode = 2
+
+[node name="Button" parent="CanvasLayer/LevelUI/VBoxContainer/MenuButton" index="0"]
+text = "play"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mah3e")
+}
+
+[connection signal="pressed" from="CanvasLayer/LevelUI/VBoxContainer/MenuButton/Button" to="." method="_on_button_pressed"]
+
+[editable path="CanvasLayer/LevelUI/VBoxContainer/MenuButton"]

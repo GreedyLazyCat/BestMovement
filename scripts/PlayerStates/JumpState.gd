@@ -13,6 +13,10 @@ func enter():
 		state_machine.player.velocity.x = state_machine.speed
 
 func update_physics(delta):
+	
+	if Input.is_action_just_released("jump"):
+		state_machine.player.velocity.y = state_machine.jump_velocity / 4
+	
 	state_machine.player.velocity.y += state_machine.jump_gravity * delta
 	if state_machine.player.velocity.y > 0:
 		transitioned.emit(self, "FallState")

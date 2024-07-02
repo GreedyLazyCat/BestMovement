@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3 uid="uid://bkckxcwup4pfa"]
+
+[ext_resource type="FontFile" uid="uid://4bcby5ion0fi" path="res://assets/fonts/ElfBoyClassic/Elfboyclassic.ttf" id="1_1kany"]
+[ext_resource type="Script" path="res://scripts/Controls/Button.gd" id="2_ohqk7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vsksr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eg1mr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3levh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_55m4v"]
+
+[sub_resource type="Theme" id="Theme_7fori"]
+Button/font_sizes/font_size = 80
+Button/fonts/font = ExtResource("1_1kany")
+Button/styles/focus = SubResource("StyleBoxEmpty_vsksr")
+Button/styles/hover = SubResource("StyleBoxEmpty_eg1mr")
+Button/styles/normal = SubResource("StyleBoxEmpty_3levh")
+Button/styles/pressed = SubResource("StyleBoxEmpty_55m4v")
+
+[node name="MenuButton" type="MarginContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
+[node name="Button" type="Button" parent="."]
+texture_filter = 1
+layout_mode = 2
+theme = SubResource("Theme_7fori")
+text = "Button text"
+script = ExtResource("2_ohqk7")
+
+[connection signal="mouse_entered" from="Button" to="Button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="Button" method="_on_mouse_exited"]

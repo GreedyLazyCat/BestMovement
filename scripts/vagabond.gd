@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var hitbox = $HitBox
 @onready var hit_particles = $HurtParticles
 @onready var health_handler = $HealthHandler
+@onready var dash_handler = $DashBarHandler
 @onready var movement_handler = $InputMovementHandler
 @onready var wall_slide_raycast = $WallSlideRayCast
 @onready var color_hit_timer = $ColotHitTimer
@@ -26,6 +27,7 @@ var camera_offset: float = 0
 
 var prev_direction: int
 var direction: int
+var camera_shaking: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -45,12 +47,14 @@ func death_stagger(time:float):
 
 func on_hurt(is_blocked: bool):
 	camera_offset = shake_offset
+	camera_shaking = true
 
 func random_offset() -> Vector2:
-	return Vector2(randf_range(-camera_offset, camera_offset), randf_range(-camera_offset, camera_offset))
+	return Vector2(randf_range(-camera_offset, camera_offset) + camera.offset.x, randf_range(-camera_offset, camera_offset))
 	
 func on_hit(hurting_hitbox: HitBox):
 	camera_offset = shake_offset
+	camera_shaking = true
 	#redo this
 	if hurting_hitbox.is_blockable() and state_machine.current_state_is("BlockState"):
 		if get_direction() != -hurting_hitbox.direction:
@@ -65,6 +69,7 @@ func on_hit(hurting_hitbox: HitBox):
 
 func on_death():
 	state_machine.change_state_to("DeathState")
+	hurtbox.collision_shape.set_deferred("disabled", true)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -72,12 +77,15 @@ func _process(delta):
 		sprite.flip_h = false
 	else:
 		sprite.flip_h = true
+	#camera.offset.x = lerp(camera.offset.x, float(10 * get_direction()), 0.1)
 	
 	wall_slide_raycast.scale.x = get_direction()
 	
-	if camera:
+	if camera and camera_shaking:
 		camera.offset = random_offset()
 		camera_offset = lerp(camera_offset, 0.0, 0.3)
+		if camera_offset == 0.0:
+			camera_shaking = false
 	
 	if print_current_state:
 		print(state_machine.current_state.name)

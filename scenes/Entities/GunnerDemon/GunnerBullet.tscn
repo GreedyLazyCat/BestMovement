@@ -1,9 +1,18 @@
-[gd_scene load_steps=15 format=3 uid="uid://c4kdsrkcsh8a"]
+[gd_scene load_steps=17 format=3 uid="uid://c4kdsrkcsh8a"]
 
 [ext_resource type="Script" path="res://scripts/GunnerBullet.gd" id="1_80yq6"]
 [ext_resource type="Script" path="res://scripts/hitbox/HitBox.gd" id="1_q4a5n"]
 [ext_resource type="Texture2D" uid="uid://dxabjqodng3vs" path="res://assets/entities/demon_gunner/demon-gunner-projectile.png" id="2_djrqy"]
 [ext_resource type="Texture2D" uid="uid://bftlplwvuouxo" path="res://assets/entities/demon_gunner/demon-gunner-projectile-explosion.png" id="3_mdnqm"]
+
+[sub_resource type="Gradient" id="Gradient_0atil"]
+offsets = PackedFloat32Array(0, 0.782857)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_336jx"]
+gradient = SubResource("Gradient_0atil")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fj6q1"]
 size = Vector2(17, 7)
@@ -81,6 +90,11 @@ animations = [{
 script = ExtResource("1_80yq6")
 speed = 200
 
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0.350913, 0.284113, 1)
+texture = SubResource("GradientTexture2D_336jx")
+texture_scale = 0.5
+
 [node name="HitBox" type="Area2D" parent="." node_paths=PackedStringArray("collision_shape")]
 collision_layer = 2
 collision_mask = 0
@@ -95,7 +109,5 @@ shape = SubResource("RectangleShape2D_fj6q1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_mqtlv")
-animation = &"Explosion"
+animation = &"Fly"
 autoplay = "Fly"
-frame = 4
-frame_progress = 1.0

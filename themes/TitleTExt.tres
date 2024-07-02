@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dh6pnwbjniwke"]
+
+[ext_resource type="FontFile" uid="uid://4bcby5ion0fi" path="res://assets/fonts/ElfBoyClassic/Elfboyclassic.ttf" id="1_p0u4r"]
+
+[resource]
+default_font = ExtResource("1_p0u4r")
+Label/colors/font_shadow_color = Color(0.878431, 0, 0, 1)
+Label/constants/shadow_offset_x = 5
+Label/constants/shadow_offset_y = 5
+Label/font_sizes/font_size = 160
+Label/fonts/font = ExtResource("1_p0u4r")

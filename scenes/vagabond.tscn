@@ -684,6 +684,7 @@ color = Color(0.984168, 5.87195e-06, 1.15514e-06, 1)
 collision_layer = 133
 script = ExtResource("1_38utm")
 invinsible_dash = true
+shake_offset = 4.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -728,10 +729,10 @@ disabled = true
 script = ExtResource("5_fc70v")
 sprite = NodePath("../AnimatedSprite2D")
 walk_particles = NodePath("../GPUParticles2D")
-jump_height = 35.0
+jump_height = 32.0
 jump_time_to_peak = 0.35
 jump_time_to_descent = 0.3
-jump_distance = 120.0
+jump_distance = 112.0
 acceleration = 0.15
 dash_force = 580
 
@@ -796,7 +797,7 @@ attack_after_block_decrease_amount = 100.0
 
 [node name="HealthHandler" type="Node" parent="."]
 script = ExtResource("31_gp8a2")
-max_health = 2
+max_health = 20
 
 [node name="DashBarHandler" type="Node" parent="." node_paths=PackedStringArray("timer")]
 script = ExtResource("32_y4i8v")

@@ -32,7 +32,8 @@ func _physics_process(delta):
 			
 			if state_machine.player.is_on_floor():
 				state_machine.change_state_to("MoveState")
-				
+	#print(current_speed)
+	
 	#if Input.is_action_pressed("right"):
 		#if state_machine.current_state.is_h_movement_allowed:
 			#current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
@@ -76,9 +77,10 @@ func _physics_process(delta):
 	
 	await_block_awailable(delta)
 	
-	if get_input_direction() == 0 and state_machine.current_state_is("MoveState"):
+	if action_strength == 0:
 		current_speed = 0
-		state_machine.change_state_to("RunStopState")
+		if state_machine.current_state_is("MoveState"):
+			state_machine.change_state_to("RunStopState")
 	
 	
 
