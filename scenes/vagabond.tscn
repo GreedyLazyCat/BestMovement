@@ -797,7 +797,7 @@ attack_after_block_decrease_amount = 100.0
 
 [node name="HealthHandler" type="Node" parent="."]
 script = ExtResource("31_gp8a2")
-max_health = 20
+max_health = 2
 
 [node name="DashBarHandler" type="Node" parent="." node_paths=PackedStringArray("timer")]
 script = ExtResource("32_y4i8v")

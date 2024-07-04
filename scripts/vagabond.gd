@@ -50,7 +50,7 @@ func on_hurt(is_blocked: bool):
 	camera_shaking = true
 
 func random_offset() -> Vector2:
-	return Vector2(randf_range(-camera_offset, camera_offset) + camera.offset.x, randf_range(-camera_offset, camera_offset))
+	return Vector2(randf_range(-camera_offset, camera_offset), randf_range(-camera_offset, camera_offset))
 	
 func on_hit(hurting_hitbox: HitBox):
 	camera_offset = shake_offset

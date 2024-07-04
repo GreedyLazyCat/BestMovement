@@ -136,8 +136,9 @@ fog_height_density = 10.8387
 [node name="EntryPoint" type="Node2D" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_0cub2")
 camera = NodePath("Camera2D")
+MAIN_MENU_PATH = "res://scenes/Levels/MainMenu.tscn"
 
-[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("hud", "anim_player", "pause_menu", "canvas_layer")]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("hud", "anim_player", "pause_menu")]
 process_mode = 3
 process_callback = 0
 position_smoothing_enabled = true
@@ -146,13 +147,13 @@ script = ExtResource("2_kdqb1")
 hud = NodePath("CRTEffect/Hud")
 anim_player = NodePath("AnimationPlayer")
 pause_menu = NodePath("CRTEffect/PauseMenu")
-canvas_layer = NodePath("CRTEffect")
 
 [node name="CRTEffect" type="CanvasLayer" parent="Camera2D"]
 
 [node name="Hud" parent="Camera2D/CRTEffect" instance=ExtResource("2_yxavf")]
 
 [node name="DeathScreen" parent="Camera2D/CRTEffect" instance=ExtResource("4_oxt1a")]
+process_mode = 3
 
 [node name="PauseMenu" parent="Camera2D/CRTEffect" instance=ExtResource("4_nv7ie")]
 mouse_filter = 2
@@ -191,4 +192,15 @@ libraries = {
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_4jun3")
 
+[connection signal="pressed" from="Camera2D/CRTEffect/DeathScreen/VBoxContainer/RestartButton/Button" to="." method="_on_reload_level_pressed"]
+[connection signal="pressed" from="Camera2D/CRTEffect/DeathScreen/VBoxContainer/QuitToMenuButton/Button" to="." method="_on_quit_to_main_menu_pressed"]
+[connection signal="pressed" from="Camera2D/CRTEffect/PauseMenu/VBoxContainer/Restart/Button" to="." method="_on_reload_level_pressed"]
+[connection signal="pressed" from="Camera2D/CRTEffect/PauseMenu/VBoxContainer/QuitToMainMenu/Button" to="." method="_on_quit_to_main_menu_pressed"]
 [connection signal="animation_finished" from="Camera2D/AnimationPlayer" to="." method="_on_transition_finished"]
+
+[editable path="Camera2D/CRTEffect/DeathScreen"]
+[editable path="Camera2D/CRTEffect/DeathScreen/VBoxContainer/RestartButton"]
+[editable path="Camera2D/CRTEffect/DeathScreen/VBoxContainer/QuitToMenuButton"]
+[editable path="Camera2D/CRTEffect/PauseMenu"]
+[editable path="Camera2D/CRTEffect/PauseMenu/VBoxContainer/Restart"]
+[editable path="Camera2D/CRTEffect/PauseMenu/VBoxContainer/QuitToMainMenu"]

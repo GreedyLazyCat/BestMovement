@@ -8,3 +8,7 @@ extends Control
 
 func show_screen():
 	animation_player.play("Show")
+
+func hide_screen():
+	animation_player.play("Hide")
+	 

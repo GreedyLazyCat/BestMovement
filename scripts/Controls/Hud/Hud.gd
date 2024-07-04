@@ -19,6 +19,10 @@ func connect_player(player: Player):
 	dash_handler = player.dash_handler
 	change_hp()
 
+func disconnect_player():
+	health_handler = null
+	dash_handler = null
+
 func change_hp():
 	var text = "HP: "
 	for i in range(health_handler.health):

@@ -4,6 +4,8 @@ extends Node2D
 @onready var level_container = $LevelContainer
 @export var camera: LevelCamera
 
+@export var MAIN_MENU_PATH: String
+
 var level: Level
 var paused: bool = false
 
@@ -22,6 +24,8 @@ func _ready():
 			connect_level_ui(level)
 		
 	#camera.anim_player.animation_finished.connect(self.on_transition_finished)
+
+
 
 func connect_level_ui(to_level: Level):
 	if level_ui:
@@ -51,10 +55,10 @@ func handle_loading_level():
 		if status == ResourceLoader.THREAD_LOAD_LOADED:
 			var new_level = ResourceLoader.load_threaded_get(level_path).instantiate() as Level
 			
-			if not level.get_player():
-				remove_child(camera)
-			else:
-				level.remove_child(camera)
+			#if not level.get_player():
+				#remove_child(camera)
+			#elif level != new_level:
+				#level.get_player().remove_child(camera)
 			
 			level_container.remove_child(level)
 			level_container.add_child(new_level)
@@ -63,7 +67,11 @@ func handle_loading_level():
 			level.queue_free()
 			
 			level = new_level
+			level.transitioned.connect(self.on_level_change)
+			if level.get_player():
+				level.get_player().health_handler.dead.connect(self.on_player_death)
 			connect_level_ui(level)
+			camera.call_deferred("update_controls_list")
 			camera.play_transition("OutTransition")
 			loading_level = false
 		elif status == ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
@@ -74,13 +82,23 @@ func handle_loading_level():
 			print("Load failed")
 
 func attach_camera(to_level: Level):
+	camera.limit_left = to_level.camera_limit_left
+	camera.limit_right = to_level.camera_limit_right
 	if not to_level.get_player():
+		camera.reparent(self)
+		move_child(camera, 0)
 		var size = get_viewport_rect().size
 		camera.global_position = Vector2(size.x / 2, size.y / 2)
 		camera.zoom = Vector2(1.0, 1.0)
 		camera.hud.visible = false
+		if to_level is MainMenu:
+			camera.pause_allowed = false
 	else:
-		to_level.get_player().add_child(camera)
+		if camera.get_parent():
+			camera.reparent(to_level.get_player())
+		else:
+			to_level.get_player().add_child(camera)
+		camera.pause_allowed = true
 		to_level.get_player().camera = camera
 		camera.global_position = to_level.get_player().global_position
 		camera.reset_smoothing()
@@ -90,6 +108,9 @@ func attach_camera(to_level: Level):
 		
 		
 
+func on_player_death():
+	camera.show_death_screen()
+	camera.pause_allowed = false
 
 func _on_transition_finished(anim_name):
 	if anim_name == "InTransition":
@@ -98,3 +119,21 @@ func _on_transition_finished(anim_name):
 
 func _on_play_button_pressed():
 	pass # Replace with function body.
+
+func _on_reload_level_pressed():
+	if camera.active_control is PauseMenu:
+		camera.hide_pause_menu()
+		camera.unpause()
+		on_level_change(level_path)
+	elif camera.active_control is DeathScreen:
+		camera.hide_death_screen()
+		camera.unpause()
+		on_level_change(level_path)
+
+
+func _on_quit_to_main_menu_pressed():
+	camera.hide_current_control()
+	camera.unpause()
+	camera.hud.visible = false
+	camera.hud.disconnect_player()
+	on_level_change(MAIN_MENU_PATH)

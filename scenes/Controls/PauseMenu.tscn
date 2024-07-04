@@ -189,16 +189,18 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="MenuButton2" parent="VBoxContainer" instance=ExtResource("3_1jtfj")]
+[node name="Restart" parent="VBoxContainer" instance=ExtResource("3_1jtfj")]
 layout_mode = 2
 
-[node name="Button" parent="VBoxContainer/MenuButton2" index="0"]
+[node name="Button" parent="VBoxContainer/Restart" index="0"]
+mouse_filter = 2
 text = "Restart"
 
-[node name="MenuButton" parent="VBoxContainer" instance=ExtResource("3_1jtfj")]
+[node name="QuitToMainMenu" parent="VBoxContainer" instance=ExtResource("3_1jtfj")]
 layout_mode = 2
 
-[node name="Button" parent="VBoxContainer/MenuButton" index="0"]
+[node name="Button" parent="VBoxContainer/QuitToMainMenu" index="0"]
+mouse_filter = 2
 text = "quit to menu"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -206,5 +208,5 @@ libraries = {
 "": SubResource("AnimationLibrary_h3q4o")
 }
 
-[editable path="VBoxContainer/MenuButton2"]
-[editable path="VBoxContainer/MenuButton"]
+[editable path="VBoxContainer/Restart"]
+[editable path="VBoxContainer/QuitToMainMenu"]

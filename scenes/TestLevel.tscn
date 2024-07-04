@@ -243,9 +243,9 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 8461.5
+offset_left = 11917.5
 offset_top = -18.0
-offset_right = 8818.5
+offset_right = 12274.5
 offset_bottom = 71.0
 grow_horizontal = 2
 theme = SubResource("Theme_w3i3v")
@@ -318,6 +318,7 @@ path_finder = NodePath("../Pathfinder")
 script = ExtResource("10_b62ct")
 tile_map = NodePath("../TileMap2")
 jump_tiles_length = 4
+draw_graph = true
 
 [node name="Hound2" parent="." node_paths=PackedStringArray("path_finder") groups=["Enemies"] instance=ExtResource("8_innuy")]
 position = Vector2(858, 439)
