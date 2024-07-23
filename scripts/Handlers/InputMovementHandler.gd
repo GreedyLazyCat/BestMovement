@@ -85,7 +85,7 @@ func _physics_process(delta):
 	
 
 func get_input_direction():
-	return Input.get_action_strength("left") * -1 + Input.get_action_strength("right")
+	return sign(Input.get_action_strength("left") * -1 + Input.get_action_strength("right"))
 
 func start_block_await():
 	need_to_handle_block = true

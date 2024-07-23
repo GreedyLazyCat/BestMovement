@@ -46,6 +46,8 @@ func on_level_change(path: String):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	handle_loading_level()
+	if Input.is_action_just_pressed("reload"):
+		on_level_change(level_path)
 	
 			
 
@@ -102,19 +104,29 @@ func attach_camera(to_level: Level):
 		to_level.get_player().camera = camera
 		camera.global_position = to_level.get_player().global_position
 		camera.reset_smoothing()
+		
 		camera.hud.connect_player(to_level.get_player())
+		camera.hud.connect_stopwatch(to_level.get_stopwatch())
 		camera.hud.visible = true
+		
 		camera.zoom = Vector2(3.0, 3.0)
 		
 		
 
 func on_player_death():
-	camera.show_death_screen()
-	camera.pause_allowed = false
+	if not camera.anim_player.current_animation == "InTransition" \
+	and not camera.anim_player.is_playing():
+		camera.show_death_screen()
+		if level.get_stopwatch():
+			level.get_stopwatch().stop()
+		camera.pause_allowed = false
 
 func _on_transition_finished(anim_name):
 	if anim_name == "InTransition":
 		loading_level = true
+	if anim_name == "OutTransition":
+		if level.get_stopwatch():
+			level.get_stopwatch().start()
 
 
 func _on_play_button_pressed():
@@ -136,4 +148,5 @@ func _on_quit_to_main_menu_pressed():
 	camera.unpause()
 	camera.hud.visible = false
 	camera.hud.disconnect_player()
+	camera.hud.disconnect_stopwatch()
 	on_level_change(MAIN_MENU_PATH)

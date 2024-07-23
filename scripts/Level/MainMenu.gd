@@ -6,10 +6,12 @@ extends Level
 @onready var title = $CanvasLayer/LevelUI/Label
 @onready var buttons = $CanvasLayer/LevelUI/VBoxContainer
 @onready var play_button = $CanvasLayer/LevelUI/VBoxContainer/PlayButton/Button
+@onready var current_button_controller = $CurrentButtonController
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	play_button.pressed.connect(self._on_button_pressed)
+	current_button_controller.process_input = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

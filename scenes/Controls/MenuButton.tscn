@@ -28,6 +28,7 @@ grow_horizontal = 2
 [node name="Button" type="Button" parent="."]
 texture_filter = 1
 layout_mode = 2
+size_flags_horizontal = 4
 theme = SubResource("Theme_7fori")
 text = "Button text"
 script = ExtResource("2_ohqk7")

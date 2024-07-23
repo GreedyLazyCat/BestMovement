@@ -37,6 +37,21 @@ value = 50.0
 texture_under = ExtResource("2_cmiq8")
 texture_progress = ExtResource("3_es77h")
 
+[node name="StopWatchLabel" type="Label" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 58.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+theme = SubResource("Theme_stp44")
+text = "00:00"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 offset_left = 20.0

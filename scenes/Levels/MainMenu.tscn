@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxskkc5gqyaj5"]
+[gd_scene load_steps=11 format=3 uid="uid://dxskkc5gqyaj5"]
 
 [ext_resource type="Script" path="res://scripts/Level/MainMenu.gd" id="1_hb1kd"]
 [ext_resource type="Texture2D" uid="uid://djl4xg5wdp27n" path="res://assets/backgrounds/back1.png" id="2_i7iv8"]
 [ext_resource type="Shader" path="res://shaders/wave.gdshader" id="2_sitfo"]
 [ext_resource type="PackedScene" uid="uid://bkckxcwup4pfa" path="res://scenes/Controls/MenuButton.tscn" id="2_xyug1"]
 [ext_resource type="Theme" uid="uid://dh6pnwbjniwke" path="res://themes/TitleTExt.tres" id="3_p0vjy"]
+[ext_resource type="Script" path="res://scripts/Controls/CurrentButtonController.gd" id="6_osbne"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xid0r"]
 shader = ExtResource("2_sitfo")
@@ -96,6 +97,10 @@ text = "Quit"
 libraries = {
 "": SubResource("AnimationLibrary_mah3e")
 }
+
+[node name="CurrentButtonController" type="Node" parent="." node_paths=PackedStringArray("buttons")]
+script = ExtResource("6_osbne")
+buttons = [NodePath("../CanvasLayer/LevelUI/VBoxContainer/PlayButton/Button"), NodePath("../CanvasLayer/LevelUI/VBoxContainer/QuitButton/Button")]
 
 [connection signal="pressed" from="CanvasLayer/LevelUI/VBoxContainer/QuitButton/Button" to="." method="_on_quit_pressed"]
 

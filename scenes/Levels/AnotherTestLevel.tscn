@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b3wvv5rl5ljfu"]
+[gd_scene load_steps=12 format=3 uid="uid://b3wvv5rl5ljfu"]
 
 [ext_resource type="Script" path="res://scripts/Level/AnotherTestLevel.gd" id="1_q84w3"]
 [ext_resource type="PackedScene" uid="uid://c73cg3qe6bac" path="res://scenes/vagabond.tscn" id="2_25dot"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/Utility/Pathfinder.gd" id="7_p8ni5"]
 [ext_resource type="Script" path="res://scripts/LevelConditions/LevelConditionChecker.gd" id="9_j4k37"]
 [ext_resource type="Script" path="res://scripts/LevelConditions/AllEnemiesKilledCondition.gd" id="10_14meo"]
+[ext_resource type="Script" path="res://scripts/Utility/StopWatch.gd" id="11_easm8"]
 
 [node name="AnotherTestLevel" type="Node2D"]
 script = ExtResource("1_q84w3")
@@ -33,7 +34,7 @@ texture = ExtResource("2_bsctn")
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("2_25dot")]
-position = Vector2(495, 459)
+position = Vector2(494, 444)
 
 [node name="TileMap2" type="TileMap" parent="."]
 texture_filter = 1
@@ -85,5 +86,8 @@ script = ExtResource("9_j4k37")
 [node name="AllEnemiesKilledCondition" type="Node" parent="LevelConditionChecker"]
 script = ExtResource("10_14meo")
 enemies_group_name = "Enemy"
+
+[node name="StopWatch" type="Node" parent="."]
+script = ExtResource("11_easm8")
 
 [connection signal="all_conditions_done" from="LevelConditionChecker" to="." method="_on_level_condition_checker_all_conditions_done"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cqfdiugt30d58"]
+[gd_scene load_steps=11 format=3 uid="uid://cqfdiugt30d58"]
 
 [ext_resource type="Shader" path="res://shaders/wave.gdshader" id="1_847hl"]
 [ext_resource type="Script" path="res://scripts/Controls/PauseMenu.gd" id="1_t4aa2"]
 [ext_resource type="Theme" uid="uid://dh6pnwbjniwke" path="res://themes/TitleTExt.tres" id="2_0xwlj"]
 [ext_resource type="PackedScene" uid="uid://bkckxcwup4pfa" path="res://scenes/Controls/MenuButton.tscn" id="3_1jtfj"]
+[ext_resource type="Script" path="res://scripts/Controls/CurrentButtonController.gd" id="5_bcb23"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o8a6a"]
 shader = ExtResource("1_847hl")
@@ -207,6 +208,10 @@ text = "quit to menu"
 libraries = {
 "": SubResource("AnimationLibrary_h3q4o")
 }
+
+[node name="CurrentButtonController" type="Node" parent="." node_paths=PackedStringArray("buttons")]
+script = ExtResource("5_bcb23")
+buttons = [NodePath("../VBoxContainer/Restart/Button"), NodePath("../VBoxContainer/QuitToMainMenu/Button")]
 
 [editable path="VBoxContainer/Restart"]
 [editable path="VBoxContainer/QuitToMainMenu"]

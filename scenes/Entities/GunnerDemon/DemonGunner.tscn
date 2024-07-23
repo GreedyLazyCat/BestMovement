@@ -406,7 +406,7 @@ shape = SubResource("RectangleShape2D_4h561")
 
 [node name="ShootRayCast" type="RayCast2D" parent="."]
 position = Vector2(0, 24)
-target_position = Vector2(117, 0)
+target_position = Vector2(111, 0)
 collision_mask = 4
 
 [node name="ColorHitTimer" type="Timer" parent="." node_paths=PackedStringArray("sprite")]
