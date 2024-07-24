@@ -27,7 +27,10 @@ func _ready():
 func on_death():
 	var new_parts = parts.instantiate() as EntityParts
 	
-	get_tree().root.call_deferred("add_child", new_parts)
+	var entry_point = get_tree().root.get_node("EntryPoint") as EntryPoint
+	
+	
+	entry_point.level.call_deferred("add_child", new_parts)
 	new_parts.set_deferred("global_position", global_position) 
 	new_parts.call_deferred("apply_impulses", state_machine.player.get_direction())
 	new_parts.call_deferred("start_deletion_timer")

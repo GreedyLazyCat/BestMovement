@@ -1,0 +1,120 @@
+[gd_scene load_steps=17 format=3 uid="uid://dxtx02ngm2b4r"]
+
+[ext_resource type="Script" path="res://scripts/Utility/HFirstLevelParts.gd" id="1_76gto"]
+[ext_resource type="Script" path="res://scripts/PlotElements/HoundHeadFirstLevel.gd" id="2_duixm"]
+[ext_resource type="Texture2D" uid="uid://dru86t2cfxece" path="res://assets/entities/hound/parts/hound-parts-head.png" id="2_ulrqa"]
+[ext_resource type="FontFile" uid="uid://4bcby5ion0fi" path="res://assets/fonts/ElfBoyClassic/Elfboyclassic.ttf" id="3_7qfo3"]
+[ext_resource type="Texture2D" uid="uid://bggole4juncdw" path="res://assets/entities/hound/parts/hound-parts-body.png" id="3_wpxo6"]
+[ext_resource type="Texture2D" uid="uid://cf12j0hujmmc3" path="res://assets/entities/hound/parts/hound-parts-leg-left.png" id="4_pivuk"]
+[ext_resource type="Texture2D" uid="uid://28alqnqacvty" path="res://assets/entities/hound/parts/hound-parts-leg-right.png" id="5_d27m8"]
+[ext_resource type="Script" path="res://scripts/PlotElements/InteractionLabel.gd" id="5_r0vga"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hjv4e"]
+radius = 4.0
+
+[sub_resource type="Gradient" id="Gradient_r8dqe"]
+offsets = PackedFloat32Array(0, 0.668712)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q82ai"]
+gradient = SubResource("Gradient_r8dqe")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ow46d"]
+size = Vector2(53.75, 48.25)
+
+[sub_resource type="Theme" id="Theme_bdleh"]
+Label/font_sizes/font_size = 16
+Label/fonts/font = ExtResource("3_7qfo3")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1xgia"]
+radius = 3.0
+height = 10.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_68n1w"]
+radius = 3.0
+height = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c3d16"]
+radius = 3.0
+height = 8.0
+
+[node name="HFirstLevelParts" type="Node2D" node_paths=PackedStringArray("parts")]
+position = Vector2(1, -26)
+script = ExtResource("1_76gto")
+parts = [NodePath("body"), NodePath("leg_left"), NodePath("leg_right")]
+
+[node name="head" type="RigidBody2D" parent="." node_paths=PackedStringArray("label")]
+collision_layer = 0
+collision_mask = 144
+lock_rotation = true
+script = ExtResource("2_duixm")
+label = NodePath("Label")
+
+[node name="Sprite2D" type="Sprite2D" parent="head"]
+texture_filter = 1
+texture = ExtResource("2_ulrqa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="head"]
+position = Vector2(5, 23)
+shape = SubResource("CircleShape2D_hjv4e")
+
+[node name="PointLight2D" type="PointLight2D" parent="head"]
+position = Vector2(5, 23)
+color = Color(0.999993, 0.274001, 0.213282, 1)
+texture = SubResource("GradientTexture2D_q82ai")
+
+[node name="Area2D" type="Area2D" parent="head"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="head/Area2D"]
+position = Vector2(5, 23)
+shape = SubResource("RectangleShape2D_ow46d")
+
+[node name="Label" type="Label" parent="head"]
+texture_filter = 1
+offset_right = 20.0
+offset_bottom = 13.0
+theme = SubResource("Theme_bdleh")
+text = "[q]"
+script = ExtResource("5_r0vga")
+
+[node name="body" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="body"]
+texture_filter = 1
+texture = ExtResource("3_wpxo6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body"]
+position = Vector2(-2, 25)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_1xgia")
+
+[node name="leg_left" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="leg_left"]
+texture_filter = 1
+texture = ExtResource("4_pivuk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leg_left"]
+position = Vector2(-5, 29)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_68n1w")
+
+[node name="leg_right" type="RigidBody2D" parent="."]
+collision_layer = 0
+collision_mask = 128
+
+[node name="Sprite2D" type="Sprite2D" parent="leg_right"]
+texture_filter = 1
+texture = ExtResource("5_d27m8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="leg_right"]
+position = Vector2(3, 28)
+rotation = 2.16595
+shape = SubResource("CapsuleShape2D_c3d16")

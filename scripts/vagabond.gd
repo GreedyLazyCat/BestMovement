@@ -11,6 +11,7 @@ extends CharacterBody2D
 @onready var movement_handler = $InputMovementHandler
 @onready var wall_slide_raycast = $WallSlideRayCast
 @onready var color_hit_timer = $ColotHitTimer
+@onready var inventory_handler = $InventoryHandler
 
 
 @export var invinsible_dash: bool = false

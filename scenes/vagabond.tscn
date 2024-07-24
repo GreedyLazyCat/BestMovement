@@ -1,4 +1,4 @@
-[gd_scene load_steps=116 format=3 uid="uid://c73cg3qe6bac"]
+[gd_scene load_steps=117 format=3 uid="uid://c73cg3qe6bac"]
 
 [ext_resource type="Script" path="res://scripts/vagabond.gd" id="1_38utm"]
 [ext_resource type="Texture2D" uid="uid://b32u7uekkyjh0" path="res://assets/vagabond-jump.png" id="1_jqxqu"]
@@ -34,6 +34,7 @@
 [ext_resource type="Script" path="res://scripts/Handlers/HealthHandler.gd" id="31_gp8a2"]
 [ext_resource type="Script" path="res://scripts/Handlers/DashBarHandler.gd" id="32_y4i8v"]
 [ext_resource type="Script" path="res://scripts/Utility/ColorHitTimer.gd" id="34_574k8"]
+[ext_resource type="Script" path="res://scripts/Handlers/InventoryHandler.gd" id="35_savnq"]
 
 [sub_resource type="Animation" id="Animation_t020x"]
 resource_name = "Test"
@@ -843,3 +844,6 @@ wait_time = 0.1
 one_shot = true
 script = ExtResource("34_574k8")
 sprite = NodePath("../AnimatedSprite2D")
+
+[node name="InventoryHandler" type="Node" parent="."]
+script = ExtResource("35_savnq")

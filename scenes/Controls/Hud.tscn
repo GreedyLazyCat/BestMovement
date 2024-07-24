@@ -52,7 +52,7 @@ size_flags_horizontal = 0
 theme = SubResource("Theme_stp44")
 text = "00:00"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 offset_left = 20.0
 offset_top = 20.0
@@ -65,3 +65,9 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme = SubResource("Theme_stp44")
 text = "HP "
+
+[node name="InventoryLabel" type="Label" parent="HBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_stp44")

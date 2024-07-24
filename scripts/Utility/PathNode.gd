@@ -2,7 +2,7 @@ class_name PathNode
 extends Node2D
 
 @onready var label = $Label
-var text
+var text = ''
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

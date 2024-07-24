@@ -34,7 +34,7 @@ func _on_play_button_pressed():
 
 
 func _on_button_pressed():
-	transitioned.emit("res://scenes/Levels/AnotherTestLevel.tscn")
+	transitioned.emit("res://scenes/Levels/FirstLevel.tscn")
 
 
 func _on_quit_pressed():

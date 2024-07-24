@@ -22,6 +22,7 @@ radius = 3.0
 height = 8.0
 
 [node name="HoudParts" type="Node2D" node_paths=PackedStringArray("parts")]
+position = Vector2(-1, -26)
 script = ExtResource("1_grwhq")
 parts = [NodePath("head"), NodePath("body"), NodePath("leg_left"), NodePath("leg_right")]
 

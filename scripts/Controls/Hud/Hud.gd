@@ -3,7 +3,9 @@ extends Control
 
 @export var health_handler: HealthHandler
 @export var dash_handler: DashBarHandler
+var inventory_handler: InventoryHandler
 @onready var hp_label = $HBoxContainer/HPLabel
+@onready var invetory_label = $HBoxContainer/InventoryLabel
 @onready var dash_progress_bar = $DashProgressBar
 @onready var stopwatch_label = $StopWatchLabel
 
@@ -16,6 +18,10 @@ func _ready():
 		health_handler.health_changed.connect(self.on_health_changed)
 		change_hp()
 
+func on_inventory_contents_changed():
+	#print('???')
+	invetory_label.text = inventory_handler.get_items_str()
+
 func connect_stopwatch(connecting: StopWatch):
 	stopwatch = connecting
 
@@ -26,6 +32,8 @@ func connect_player(player: Player):
 	player.health_handler.health_changed.connect(self.on_health_changed)
 	health_handler = player.health_handler
 	dash_handler = player.dash_handler
+	inventory_handler = player.inventory_handler
+	inventory_handler.contents_changed.connect(self.on_inventory_contents_changed)
 	change_hp()
 
 func disconnect_player():
