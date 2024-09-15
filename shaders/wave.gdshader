@@ -6,7 +6,7 @@ uniform float amount;
 void vertex() {
 	float percent = VERTEX.g / 128.0;
 	float sine_move = sin(frequency *(TIME + VERTEX.r)) * amount;
-	float move = mix(sine_move, 0.0, percent); 
+	float move = mix(sine_move, 0.0, percent);
 	VERTEX.g += sine_move;
 }
 

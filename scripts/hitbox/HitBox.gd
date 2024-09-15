@@ -26,4 +26,3 @@ func is_unblockable():
 
 func _ready():
 	assert(collision_shape, "Collision shape not referenced")
-

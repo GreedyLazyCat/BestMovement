@@ -20,4 +20,3 @@ func start_deletion_timer():
 	if is_instance_valid(head):
 		head.reparent(entry_point.level)
 	queue_free()
-

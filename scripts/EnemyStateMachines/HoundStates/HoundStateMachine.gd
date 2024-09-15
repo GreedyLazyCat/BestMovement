@@ -35,6 +35,9 @@ func on_player_leaved(body):
 func _physics_process(delta):
 	get_direction(entity)
 	super(delta)
+	if disable_ai:
+		entity.velocity.x = 0.0
+		change_state_to("IdleState")
 
 func change_state_to(state_name: String):
 	if current_state.name == "StunState":

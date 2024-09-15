@@ -17,4 +17,3 @@ func _on_area_enter(hitbox: HitBox):
 		#print(is_blocking)
 		hurted.emit(hitbox)
 		hitbox.hitted.emit(is_blocking)
-

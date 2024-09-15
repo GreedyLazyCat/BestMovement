@@ -36,4 +36,3 @@ func on_frame_change():
 func update_physics(delta):
 	state_machine.entity.velocity.x = lerp(state_machine.entity.velocity.x, 0.0, 0.35)
 	
-

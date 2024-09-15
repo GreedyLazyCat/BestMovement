@@ -20,4 +20,3 @@ func get_stopwatch() -> StopWatch:
 
 func play_transition(transition_name: String):
 	pass
-

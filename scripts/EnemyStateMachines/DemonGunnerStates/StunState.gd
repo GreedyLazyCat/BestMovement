@@ -1,3 +1,2 @@
 class_name GunnerStunState
 extends EntityStunState
-

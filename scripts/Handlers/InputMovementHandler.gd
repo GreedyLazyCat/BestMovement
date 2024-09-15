@@ -9,6 +9,15 @@ extends Node
 @export_group("Block")
 @export var attack_after_block_time: float
 @export var attack_after_block_decrease_amount: float
+@export_group("Permissions")
+@export var moving_allowed: bool = true
+@export var jumping_allowed: bool = true
+@export var dashing_allowed: bool = true
+@export var attacking_allowed: bool = true
+@export var blocking_allowed: bool = true
+
+
+
 var block_time: float
 var need_to_handle_block: bool
 
@@ -25,7 +34,7 @@ func _physics_process(delta):
 	
 	var action_strength = Input.get_action_strength("right") - Input.get_action_strength("left")
 	
-	if action_strength != 0:
+	if action_strength != 0 and moving_allowed:
 		if state_machine.current_state.is_h_movement_allowed:
 			current_speed = lerp(current_speed, state_machine.speed, state_machine.acceleration)
 			state_machine.player.velocity.x = action_strength * current_speed
@@ -42,13 +51,13 @@ func _physics_process(delta):
 				#state_machine.change_state_to("MoveState")
 			
 	
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("jump") and jumping_allowed:
 		if state_machine.current_state.is_v_movement_allowed:
 			state_machine.change_state_to("JumpState")
 		if jump_ray_cast.is_colliding() and not state_machine.player.is_on_floor():
 				jump_buffered = true
 	
-	if Input.is_action_just_pressed("dash"):
+	if Input.is_action_just_pressed("dash") and dashing_allowed:
 		if state_machine.current_state.is_dash_allowed and dash_bar_handler.dash_avaliable():
 			if not state_machine.player.is_on_floor():
 				if not state_machine.did_air_dash:
@@ -56,13 +65,13 @@ func _physics_process(delta):
 			else:
 				state_machine.change_state_to("GroundDashState")
 		
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and attacking_allowed:
 		if state_machine.current_state.is_attack_allowed:
 			state_machine.change_state_to("AttackState")
 			if state_machine.prev_state_is("BlockState"):
 					start_block_await()
 	
-	if Input.is_action_just_pressed("block") and can_use_block:
+	if Input.is_action_just_pressed("block") and can_use_block and blocking_allowed:
 		if state_machine.current_state.is_block_allowed:
 			if not state_machine.current_state_is("BlockState"):
 				state_machine.change_state_to("BlockState")
@@ -108,4 +117,3 @@ func await_block_awailable(delta):
 
 func is_able_to_jump() -> bool:
 	return true
-

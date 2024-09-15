@@ -21,5 +21,3 @@ func heal(amount: int):
 	health += amount
 	if health > max_health:
 		health = max_health
-
-

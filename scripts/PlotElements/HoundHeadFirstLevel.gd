@@ -15,13 +15,13 @@ func _ready():
 func player_entered(body):
 	if body is Player:
 		player_in_area = true
-		label.visible = true
+		label.text = "[Q]"
 		player = body
 
 func player_exited(body):
 	if body is Player:
 		player_in_area = false
-		label.visible = false
+		label.text = "!"
 
 func _process(delta):
 	if Input.is_action_just_pressed("interact") and player_in_area:

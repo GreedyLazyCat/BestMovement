@@ -22,4 +22,3 @@ func hide_menu():
 		current_button_controller.process_input = false
 		paused = false
 		animation_player.play("Unpause")
-

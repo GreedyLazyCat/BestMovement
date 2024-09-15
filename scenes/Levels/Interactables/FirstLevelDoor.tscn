@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://crcl3jpvgld3m"]
+[gd_scene load_steps=9 format=3 uid="uid://crcl3jpvgld3m"]
 
 [ext_resource type="Script" path="res://scripts/Level/Interactables/FirstLevelDoor.gd" id="1_umh3i"]
+[ext_resource type="Shader" path="res://shaders/wave.gdshader" id="2_gg2f0"]
 [ext_resource type="FontFile" uid="uid://4bcby5ion0fi" path="res://assets/fonts/ElfBoyClassic/Elfboyclassic.ttf" id="2_qgw56"]
 [ext_resource type="Script" path="res://scripts/PlotElements/InteractionLabel.gd" id="3_evpd0"]
 
@@ -10,7 +11,13 @@ size = Vector2(20, 85)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b7lwr"]
 size = Vector2(67.25, 84)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4j4n0"]
+shader = ExtResource("2_gg2f0")
+shader_parameter/frequency = 1.0
+shader_parameter/amount = 1.0
+
 [sub_resource type="Theme" id="Theme_jwhw3"]
+Label/colors/font_shadow_color = Color(1, 0, 0, 0.972549)
 Label/font_sizes/font_size = 16
 Label/fonts/font = ExtResource("2_qgw56")
 
@@ -36,6 +43,7 @@ shape = SubResource("RectangleShape2D_b7lwr")
 
 [node name="Label" type="Label" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_4j4n0")
 offset_left = -35.0
 offset_top = -2.0
 offset_right = -15.0
